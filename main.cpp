@@ -4,6 +4,7 @@
 #include "circleParticle.h"
 #include <fstream>
 
+
 using std::cout;
 using std::endl;
 
@@ -42,5 +43,6 @@ int main(){
     }
 
     delete par1;
+    outfile << std::flush;
     outfile.close();
 }
