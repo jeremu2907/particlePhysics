@@ -1,5 +1,4 @@
 #include "particle.h"
-#include <iostream>
 
 particle::particle(){
     this->x = 0.0;
@@ -9,6 +8,7 @@ particle::particle(){
     this->vy = 0.0;
     this->vy0 = 0.0;
     this->rotation = 0.0;
+    this->m = 1;
 }
 
 particle::particle(double x, double y){
@@ -55,6 +55,14 @@ double particle::getrotation(){
     return this->rotation;
 }
 
+double* particle::getMin(){
+    return this->min;
+}
+
+double* particle::getMax(){
+    return this->max;
+}
+
 void particle::setx(double e){
     this->x = e;
 }
@@ -83,5 +91,7 @@ void particle::calcVy(){
 
 void particle::calcSy(){
     this->y += this->vy0 * DT + 0.5 * G_VAL * DT * DT;
+
+    this->calcMinMax();
     // std::cout << this->y;
 }

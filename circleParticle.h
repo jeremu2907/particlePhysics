@@ -2,14 +2,17 @@
 #define CIRCLEPARTICLE_H
 
 #include "particle.h"
+#include "cmath"
 
 class circleParticle : public particle {
     private:
         int radius = 1;
-        void xcollision(){};
+
+        void calcMinMax() override;
 
     public:
-        circleParticle(double x, double y, double vx, double vy) :  particle::particle(x, y, vx, vy){};
+        circleParticle(double x, double y, double vx, double vy);
+        ~circleParticle(){};
 
         int getRadius();
 };
