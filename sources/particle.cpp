@@ -1,4 +1,4 @@
-#include "particle.h"
+#include "../headers/particle.h"
 
 particle::particle(){
     this->x = 0.0;

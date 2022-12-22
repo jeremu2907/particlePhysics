@@ -82,7 +82,8 @@
 			[
 				0,
 				2,
-				3
+				3,
+				7
 			]
 		}
 	],
@@ -137,7 +138,8 @@
 			[
 				0,
 				2,
-				3
+				3,
+				7
 			]
 		},
 		{
@@ -146,7 +148,8 @@
 			[
 				1,
 				4,
-				5
+				5,
+				6
 			]
 		}
 	],
@@ -155,12 +158,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "circleParticle.cpp",
+			"path" : "sources/circleParticle.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"path" : "circleParticle.h",
+			"path" : "headers/circleParticle.h",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -172,18 +175,29 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "particle.cpp",
+			"path" : "sources/particle.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"path" : "particle.h",
+			"path" : "headers/particle.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
-			"path" : "timer.h",
+			"path" : "headers/timer.h",
 			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "headers/collisions.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "sources/collisions.cpp",
+			"sourceGroupIndex" : 0
 		}
 	],
 	"type" : "EXECUTABLE"

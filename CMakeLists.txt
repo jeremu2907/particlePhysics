@@ -3,12 +3,12 @@ project(particlePhysics)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(MY_SOURCES circleParticle.cpp
-                circleParticle.h
+set(MY_SOURCES sources/circleParticle.cpp
+        headers/circleParticle.h
                 main.cpp
-                particle.cpp
-                particle.h
-                timer.h)
+        sources/particle.cpp
+        headers/particle.h
+        headers/timer.h headers/collisions.h sources/collisions.cpp)
 
 find_package(SDL2 REQUIRED COMPONENTS SDL2)
 add_executable(particlePhysics ${MY_SOURCES})

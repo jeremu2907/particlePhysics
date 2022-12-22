@@ -1,4 +1,4 @@
-#include "circleParticle.h"
+#include "../headers/circleParticle.h"
 
 circleParticle::circleParticle(double x, double y, double vx, double vy) : particle::particle(x, y, vx, vy) {
     circleParticle::calcMinMax();

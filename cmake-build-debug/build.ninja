@@ -46,12 +46,12 @@ cmake_ninja_workdir = /Users/jeremynguyen/Documents/GitHub/particlePhysics/cmake
 
 build cmake_object_order_depends_target_particlePhysics: phony || CMakeFiles/particlePhysics.dir
 
-build CMakeFiles/particlePhysics.dir/circleParticle.cpp.o: CXX_COMPILER__particlePhysics_Debug /Users/jeremynguyen/Documents/GitHub/particlePhysics/circleParticle.cpp || cmake_object_order_depends_target_particlePhysics
-  DEP_FILE = CMakeFiles/particlePhysics.dir/circleParticle.cpp.o.d
+build CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o: CXX_COMPILER__particlePhysics_Debug /Users/jeremynguyen/Documents/GitHub/particlePhysics/sources/circleParticle.cpp || cmake_object_order_depends_target_particlePhysics
+  DEP_FILE = CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk -mmacosx-version-min=12.6 -fcolor-diagnostics -F /Library/Frameworks/ -std=gnu++14
   INCLUDES = -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
   OBJECT_DIR = CMakeFiles/particlePhysics.dir
-  OBJECT_FILE_DIR = CMakeFiles/particlePhysics.dir
+  OBJECT_FILE_DIR = CMakeFiles/particlePhysics.dir/sources
 
 build CMakeFiles/particlePhysics.dir/main.cpp.o: CXX_COMPILER__particlePhysics_Debug /Users/jeremynguyen/Documents/GitHub/particlePhysics/main.cpp || cmake_object_order_depends_target_particlePhysics
   DEP_FILE = CMakeFiles/particlePhysics.dir/main.cpp.o.d
@@ -60,12 +60,19 @@ build CMakeFiles/particlePhysics.dir/main.cpp.o: CXX_COMPILER__particlePhysics_D
   OBJECT_DIR = CMakeFiles/particlePhysics.dir
   OBJECT_FILE_DIR = CMakeFiles/particlePhysics.dir
 
-build CMakeFiles/particlePhysics.dir/particle.cpp.o: CXX_COMPILER__particlePhysics_Debug /Users/jeremynguyen/Documents/GitHub/particlePhysics/particle.cpp || cmake_object_order_depends_target_particlePhysics
-  DEP_FILE = CMakeFiles/particlePhysics.dir/particle.cpp.o.d
+build CMakeFiles/particlePhysics.dir/sources/particle.cpp.o: CXX_COMPILER__particlePhysics_Debug /Users/jeremynguyen/Documents/GitHub/particlePhysics/sources/particle.cpp || cmake_object_order_depends_target_particlePhysics
+  DEP_FILE = CMakeFiles/particlePhysics.dir/sources/particle.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk -mmacosx-version-min=12.6 -fcolor-diagnostics -F /Library/Frameworks/ -std=gnu++14
   INCLUDES = -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
   OBJECT_DIR = CMakeFiles/particlePhysics.dir
-  OBJECT_FILE_DIR = CMakeFiles/particlePhysics.dir
+  OBJECT_FILE_DIR = CMakeFiles/particlePhysics.dir/sources
+
+build CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o: CXX_COMPILER__particlePhysics_Debug /Users/jeremynguyen/Documents/GitHub/particlePhysics/sources/collisions.cpp || cmake_object_order_depends_target_particlePhysics
+  DEP_FILE = CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk -mmacosx-version-min=12.6 -fcolor-diagnostics -F /Library/Frameworks/ -std=gnu++14
+  INCLUDES = -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks
+  OBJECT_DIR = CMakeFiles/particlePhysics.dir
+  OBJECT_FILE_DIR = CMakeFiles/particlePhysics.dir/sources
 
 
 # =============================================================================
@@ -75,7 +82,7 @@ build CMakeFiles/particlePhysics.dir/particle.cpp.o: CXX_COMPILER__particlePhysi
 #############################################
 # Link the executable particlePhysics
 
-build particlePhysics: CXX_EXECUTABLE_LINKER__particlePhysics_Debug CMakeFiles/particlePhysics.dir/circleParticle.cpp.o CMakeFiles/particlePhysics.dir/main.cpp.o CMakeFiles/particlePhysics.dir/particle.cpp.o
+build particlePhysics: CXX_EXECUTABLE_LINKER__particlePhysics_Debug CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o CMakeFiles/particlePhysics.dir/main.cpp.o CMakeFiles/particlePhysics.dir/sources/particle.cpp.o CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk -mmacosx-version-min=12.6
   LINK_FLAGS = -F /Library/Frameworks/ -framework SDL2
   OBJECT_DIR = CMakeFiles/particlePhysics.dir
