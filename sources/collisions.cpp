@@ -15,6 +15,20 @@ void collisions::updateParticle() {
     });
 }
 
+void collisions::insertionSort() {
+    for(int i = 0; i < particleList.size(); i++){
+        if(i > 0 && particleList[i]->getx() < particleList[i - 1]->getx()){
+            particle* temp = particleList.at(i);
+            int j = i - 1;
+            while(particleList.at(j)->getx() > temp->getx() && j >= 0){
+                particleList.at(j + 1) = particleList.at(j);
+                --j;
+            }
+            particleList.at(j + 1) = temp;
+        }
+    }
+}
+
 void collisions::sweep(){
 
 }

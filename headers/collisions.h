@@ -14,7 +14,7 @@ class collisions{
     private:
         std::vector<particle*> particleList;
 
-        void resolveCollision(std::vector<particle> * ptrParticlelist){};
+        void insertionSort();
 
     public:
         collisions(){};
@@ -24,7 +24,10 @@ class collisions{
             return particleList;
         }
 
+        //Adding new particle to list of particles
         void addParticle(particle* ptrParticle);
+
+        //Resort list
         void updateParticle();
         void sweep();
 };

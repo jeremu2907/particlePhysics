@@ -45,25 +45,26 @@ int main(int argc, char *argv[]){
     collisionDetect.addParticle(par1);
     collisionDetect.addParticle(par3);
 
-//    for(auto i : collisionDetect.getParticleList())
-//        std::printf("x = %f  y = %f  min = (%f, %f)  max = (%f, %f)  vx = %f  vy = %f  rotation = %f\n\n",
-//                    i->getx(), i->gety(), i->getMin()[0], i->getMin()[1],i->getMax()[0], i->getMax()[1],
-//                    i->getvx(), i->getvy(), i->getrotation());
-    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
-                par1->getx(), par1->gety(), par1->getMin()[0], par1->getMin()[1],par1->getMax()[0], par1->getMax()[1],
-                par1->getvx(), par1->getvy(), par1->getrotation());
-    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
-                par2->getx(), par2->gety(), par2->getMin()[0], par2->getMin()[1],par2->getMax()[0], par2->getMax()[1],
-                par2->getvx(), par2->getvy(), par2->getrotation());
+    for(auto i : collisionDetect.getParticleList())
+        std::printf("x = %f  y = %f  min = (%f, %f)  max = (%f, %f)  vx = %f  vy = %f  rotation = %f\n\n",
+                    i->getx(), i->gety(), i->getMin()[0], i->getMin()[1],i->getMax()[0], i->getMax()[1],
+                    i->getvx(), i->getvy(), i->getrotation());
 
-    circleParticle::resolveCollision(par1, par2);
-
-    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
-                par1->getx(), par1->gety(), par1->getMin()[0], par1->getMin()[1],par1->getMax()[0], par1->getMax()[1],
-                par1->getvx(), par1->getvy(), par1->getrotation());
-    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
-                par2->getx(), par2->gety(), par2->getMin()[0], par2->getMin()[1],par2->getMax()[0], par2->getMax()[1],
-                par2->getvx(), par2->getvy(), par2->getrotation());
+//    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
+//                par1->getx(), par1->gety(), par1->getMin()[0], par1->getMin()[1],par1->getMax()[0], par1->getMax()[1],
+//                par1->getvx(), par1->getvy(), par1->getrotation());
+//    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
+//                par2->getx(), par2->gety(), par2->getMin()[0], par2->getMin()[1],par2->getMax()[0], par2->getMax()[1],
+//                par2->getvx(), par2->getvy(), par2->getrotation());
+//
+//    circleParticle::resolveCollision(par1, par2);
+//
+//    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
+//                par1->getx(), par1->gety(), par1->getMin()[0], par1->getMin()[1],par1->getMax()[0], par1->getMax()[1],
+//                par1->getvx(), par1->getvy(), par1->getrotation());
+//    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
+//                par2->getx(), par2->gety(), par2->getMin()[0], par2->getMin()[1],par2->getMax()[0], par2->getMax()[1],
+//                par2->getvx(), par2->getvy(), par2->getrotation());
 
 //    timer t_calc;       //Calculate particle state @ 60Hz
 //    timer t_result;     //To execute something @ 1Hz

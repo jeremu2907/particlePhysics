@@ -48,24 +48,17 @@ void circleParticle::resolveCollision(circleParticle *A, circleParticle *B) {
     double BDotTan = B->getvx() * tanX + B->getvy() * tanY;
     double paraBX = (BDotTan / (magTanSq)) * tanX;
     double paraBY = (BDotTan / (magTanSq)) * tanY;
-    double perpBX = B->getvx() - paraBX;
-    double perpBY = B->getvy() - paraBY;
-    perpBX *= -1;
-    perpBY *= -1;
+    double perpBX = -(B->getvx() - paraBX);
+    double perpBY = -(B->getvy() - paraBY);
     B->setvx(paraBX + perpBX);
     B->setvy(paraBY + perpBY);
 
-
-    //Find perpendicular component B
+    //Find perpendicular component A
     double ADotTan = A->getvx() * tanX + A->getvy() * tanY;
     double paraAX = (ADotTan / (magTanSq)) * tanX;
     double paraAY = (ADotTan / (magTanSq)) * tanY;
-    double perpAX = A->getvx() - paraAX;
-    double perpAY = A->getvy() - paraAY;
-    perpAX *= -1;
-    perpAY *= -1;
+    double perpAX = -(A->getvx() - paraAX);
+    double perpAY = -(A->getvy() - paraAY);
     A->setvx(paraAX + perpAX);
     A->setvy(paraAY + perpAY);
-
-    std::cout << paraAX << std::endl << paraBX << std::endl;
 }
