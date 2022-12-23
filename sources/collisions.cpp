@@ -4,15 +4,22 @@
 
 #include "../headers/collisions.h"
 
+collisions::collisions(particle* e[]){
+    for(int i = 0; i < sizeof(*e) / sizeof(e[0]); i++){
+        particleList.push_back(e[i]);
+    }
+    std::sort(particleList.begin(), particleList.end(), [](particle* a, particle* b){
+        return (a->getMin()[0] < b->getMin()[0])? true : false;
+    });
+}
+
 void collisions::addParticle(particle *ptrParticle) {
     particleList.push_back(ptrParticle);
     collisions::updateParticle();
 }
 
 void collisions::updateParticle() {
-    std::sort(particleList.begin(), particleList.end(), [](particle* a, particle* b){
-        return (a->getMin()[0] < b->getMin()[0])? true : false;
-    });
+    collisions::insertionSort();
 }
 
 void collisions::insertionSort() {

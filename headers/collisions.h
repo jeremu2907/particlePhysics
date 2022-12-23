@@ -18,6 +18,7 @@ class collisions{
 
     public:
         collisions(){};
+        collisions(particle*p[]);
         ~collisions(){};
 
         std::vector<particle*>getParticleList(){
