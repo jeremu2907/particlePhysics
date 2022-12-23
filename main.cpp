@@ -38,8 +38,8 @@ int main(int argc, char *argv[]){
 
     cout << "Particle Collision Engine" << endl << endl;
     collisions collisionDetect;
-    circleParticle * par1 = new circleParticle(-332,32,2, 0,5);
-    circleParticle * par2 = new circleParticle(100, 0, -1, 0, 17);
+    circleParticle * par1 = new circleParticle(1,.26794919999,7, 0,5);
+    circleParticle * par2 = new circleParticle(2, 2, -5, 0, 17);
     circleParticle * par3 = new circleParticle(0, -100, 0, 0);
     collisionDetect.addParticle(par2);
     collisionDetect.addParticle(par1);
