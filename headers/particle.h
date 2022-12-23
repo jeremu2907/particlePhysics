@@ -11,8 +11,8 @@ class particle{
     const double DT = (double)1 / 60;
 
     protected:
-        double x, y, m;             //Center (x,y), mass
-        double vx, vy, vx0, vy0;    //current and prev Velocity
+        double x, y, mass;             //Center (x,y), mass
+        double vx, vy;    //current and prev Velocity
         double rotation;            //angle of rotation
 
         //Calculate min max points of hit box, to be overridden because difference of shapes
@@ -20,6 +20,9 @@ class particle{
 
         double min[2];      //Holds the bottom left corner of the smallest projection
         double max[2];      //Holds the top right corner of the smallest projection
+
+        void calcVy();
+        void calcVx(){};
 
     public:
         particle();
@@ -34,6 +37,7 @@ class particle{
         double getvx();
         double getvy();
         double getrotation();
+        double getMass();
 
         double* getMin();
         double* getMax();
@@ -45,8 +49,8 @@ class particle{
         void setrotation(double e);
 
         //Must be inherited because all objects subject to gravity
-        void calcVy();
         void calcSy();
+        void calcSx();
 };
 
 #endif

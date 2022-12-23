@@ -3,6 +3,7 @@
 
 #include "particle.h"
 #include "cmath"
+#include <iostream>
 
 class circleParticle : public particle {
     private:
@@ -12,8 +13,10 @@ class circleParticle : public particle {
 
     public:
         circleParticle(double x, double y, double vx, double vy);
+        circleParticle(double x, double y, double vx, double vy, double mass);
         ~circleParticle(){};
 
         int getRadius();
+        void static resolveCollision(particle *A, particle *B);
 };
 #endif

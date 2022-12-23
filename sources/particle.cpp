@@ -4,17 +4,18 @@ particle::particle(){
     this->x = 0.0;
     this->y = 0.0;
     this->vx = 0.0;
-    this->vx0 = 0.0;
     this->vy = 0.0;
-    this->vy0 = 0.0;
     this->rotation = 0.0;
-    this->m = 1;
+    this->mass = 1.0;
 }
 
 particle::particle(double x, double y){
-    particle();
     this->x = x;
     this->y = y;
+    this->vx = 0.0;
+    this->vy = 0.0;
+    this->rotation = 0.0;
+    this->mass = 1.0;
 }
 
 particle::particle(double x, double y, double vx, double vy){
@@ -23,16 +24,18 @@ particle::particle(double x, double y, double vx, double vy){
     this->y = y;
     this->vx = vx;
     this->vy = vy;
+    this->rotation = 0.0;
+    this->mass = 1.0;
 }
 
-particle::particle(double x, double y, double vx, double vy, double rotation){
+particle::particle(double x, double y, double vx, double vy, double mass){
+    particle();
     this->x = x;
     this->y = y;
     this->vx = vx;
     this->vy = vy;
-    this->vx0 = vx;
-    this->vy0 = vy;
-    this->rotation = rotation;
+    this->rotation = 0.0;
+    this->mass = mass;
 }
 
 double particle::getx(){
@@ -53,6 +56,10 @@ double particle::getvy(){
 
 double particle::getrotation(){
     return this->rotation;
+}
+
+double particle::getMass(){
+    return this->mass;
 }
 
 double* particle::getMin(){
@@ -84,14 +91,17 @@ void particle::setrotation(double e){
 }
 
 void particle::calcVy(){
-    this->vy0 = this->vy;
+    double vy0 = this->vy;
     this->vy = G_VAL * DT + vy0;
-    // std::cout << G_VAL * DT << std::endl;
 }
 
 void particle::calcSy(){
-    this->y += this->vy0 * DT + 0.5 * G_VAL * DT * DT;
-
+    this->y += this->vy * DT + 0.5 * G_VAL * DT * DT;
+    particle::calcVy();
     this->calcMinMax();
-    // std::cout << this->y;
+}
+
+void particle::calcSx(){
+    this->x += this->vx * DT;
+    this->calcMinMax();
 }
