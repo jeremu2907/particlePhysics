@@ -20,7 +20,7 @@ int circleParticle::getRadius(){
     return this->radius;
 }
 
-void circleParticle::resolveCollision(particle *A, particle *B) {
+void circleParticle::resolveCollision(circleParticle *A, circleParticle *B) {
     double M = B->getMass() * B->getMass() / A->getMass();
     double a = M + B->getMass();
     double b = -1 * (2 * A->getvx() * B->getMass() + 2 * M * B->getvx());

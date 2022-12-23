@@ -17,6 +17,6 @@ class circleParticle : public particle {
         ~circleParticle(){};
 
         int getRadius();
-        void static resolveCollision(particle *A, particle *B);
+        void static resolveCollision(circleParticle *A, circleParticle *B);
 };
 #endif
