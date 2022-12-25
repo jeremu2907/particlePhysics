@@ -64,13 +64,14 @@ void testCollisionInit(){
     delete par3;
 }
 void testCollision(){
-    circleParticle * par1 = new circleParticle(0,0,1, 1,1);
-    circleParticle * par2 = new circleParticle(2, 0, -1, 1, 1);
+    circleParticle * par1 = new circleParticle(0,0,1, 1,4);
+    circleParticle * par2 = new circleParticle(2, 0, 0, 1, 2);
 
     cout << "Before Collision\n";
     std::printf("A:\tvx:%f \tvy:%f \tm:%f\n", par1->getvx(), par1->getvy(), par1->getMass());
     std::printf("B:\tvx:%f \tvy:%f \tm:%f\n", par2->getvx(), par2->getvy(), par2->getMass());
-    circleParticle::resolveCollision(par1, par2);
+//    circleParticle::resolveCollision(par1, par2);
+    circleParticle::resolveCollisionDirect(par1,par2);
     cout << "After Collision\n";
     std::printf("A:\tvx:%f \tvy:%f \tm:%f\n", par1->getvx(), par1->getvy(), par1->getMass());
     std::printf("B:\tvx:%f \tvy:%f \tm:%f\n\n", par2->getvx(), par2->getvy(), par2->getMass());
