@@ -8,13 +8,18 @@
 #define PARTICLEPHYSICS_COLLISIONS_H
 
 #include <vector>
+#include <algorithm>
 #include "particle.h"
 
 class collisions{
     private:
-        std::vector<particle*> particleList;
+        std::vector<particle*> particleListX;
+        std::vector<particle*> particleListY;
 
-        void insertionSort();
+        double varianceX;
+        double varianceY;
+
+        void insertionSort(std::vector<particle*> &);
 
     public:
         collisions(){};
@@ -22,7 +27,7 @@ class collisions{
         ~collisions(){};
 
         std::vector<particle*>getParticleList(){
-            return particleList;
+            return (varianceX >= varianceY)? particleListX : particleListY;
         }
 
         //Adding new particle to list of particles
