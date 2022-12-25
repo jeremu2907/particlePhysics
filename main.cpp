@@ -19,6 +19,7 @@ void testContinuousState();
 
 int main(int argc, char *argv[]){
     cout << "Particle Collision Engine" << endl << endl;
+    testCollision();
 }
 
 void testScreen(){
@@ -63,26 +64,17 @@ void testCollisionInit(){
     delete par3;
 }
 void testCollision(){
-    circleParticle * par1 = new circleParticle(1,.26794919999,7, 0,5);
-    circleParticle * par2 = new circleParticle(2, 2, -5, 0, 17);
+    circleParticle * par1 = new circleParticle(0,0,1, 1,1);
+    circleParticle * par2 = new circleParticle(2, 0, -1, 1, 1);
 
     cout << "Before Collision\n";
-    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
-                par1->getx(), par1->gety(), par1->getMin()[0], par1->getMin()[1],par1->getMax()[0], par1->getMax()[1],
-                par1->getvx(), par1->getvy(), par1->getrotation());
-    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
-                par2->getx(), par2->gety(), par2->getMin()[0], par2->getMin()[1],par2->getMax()[0], par2->getMax()[1],
-                par2->getvx(), par2->getvy(), par2->getrotation());
-
+    std::printf("A:\tvx:%f \tvy:%f \tm:%f\n", par1->getvx(), par1->getvy(), par1->getMass());
+    std::printf("B:\tvx:%f \tvy:%f \tm:%f\n", par2->getvx(), par2->getvy(), par2->getMass());
     circleParticle::resolveCollision(par1, par2);
-
     cout << "After Collision\n";
-    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
-                par1->getx(), par1->gety(), par1->getMin()[0], par1->getMin()[1],par1->getMax()[0], par1->getMax()[1],
-                par1->getvx(), par1->getvy(), par1->getrotation());
-    std::printf("x = %f\ty = %f\tmin = (%f, %f)\tmax = (%f, %f)\tvx = %f\tvy = %f\trotation = %f\n\n",
-                par2->getx(), par2->gety(), par2->getMin()[0], par2->getMin()[1],par2->getMax()[0], par2->getMax()[1],
-                par2->getvx(), par2->getvy(), par2->getrotation());
+    std::printf("A:\tvx:%f \tvy:%f \tm:%f\n", par1->getvx(), par1->getvy(), par1->getMass());
+    std::printf("B:\tvx:%f \tvy:%f \tm:%f\n\n", par2->getvx(), par2->getvy(), par2->getMass());
+
 
     delete par1;
     delete par2;
