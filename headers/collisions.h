@@ -23,13 +23,19 @@ class collisions{
         void insertionSort(std::vector<particle*> &);
         bool testCollision(particle* A, particle *B);
 
+        int getParticleList(){
+            return (varianceX >= varianceY)? 0 : 1;
+        }
+
     public:
+        int totalCalculations = 0;
+
         collisions(){};
         collisions(particle*p[]);
         ~collisions(){};
 
-        int getParticleList(){
-            return (varianceX >= varianceY)? 0 : 1;
+        std::vector<particle*> getList(){
+            return (getParticleList())? particleListY : particleListX;
         }
 
         //Adding new particle to list of particles

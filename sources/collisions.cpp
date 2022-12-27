@@ -84,31 +84,21 @@ void collisions::checkForCollision(){
    int  queueFront = 0,
         queueBack  = 0;
 
-//   for(auto f : List){
-//       std::printf("%f\n", f->getx());
-//   }
-//   std::printf("\n");
-//    std::printf("\n");
-
    while(queueFront < List.size()){
-//       std::printf("Checking If Statement\n");
-       if(List[queueBack]->getMin()[axis] <= List[queueFront]->getMax()[axis]){     //Possible collision
-           if(queueBack < List.size() - 1)
+       if(List[queueBack]->getMin()[axis] <= List[queueFront]->getMax()[axis]
+            && queueBack < List.size() - 1){     //Possible collision
             queueBack++;
-       }
-//       std::cout << "Passed if\n";
-//       std::cout << queueFront << "   " << queueBack << std::endl;
-       if((List[queueBack]->getMin()[axis] > List[queueFront]->getMax()[axis]) || queueBack >= List.size() - 1){                                                             //No possible collision
-           //Check all pairs within the queue
-//           std::cout <<"Check collision\n";
+       }        //No possible collision
+       else{
            if(queueBack - queueFront != 0){     //More than one particle in queue
                while(queueFront < queueBack) {
                    for (int j = queueFront + 1; j <= queueBack; j++) {
-//                       std::cout << "Testing\n";
+                       if(List[j]->getMin()[axis] > List[queueFront]->getMax()[axis])
+                           break;
+                       totalCalculations++;
                        if (testCollision(List[queueFront], List[j])) {
                            circleParticle::resolveCollision(dynamic_cast<circleParticle *> (List[queueFront]),
                                                             dynamic_cast<circleParticle *> (List[j]));
-//                           std::cout << "Collided#####################################################################\n";
                        }
                    }
                    queueFront++;
@@ -116,8 +106,6 @@ void collisions::checkForCollision(){
            } else {
                queueFront++;
            }
-//           std::cout << "Passed COllision\n";
        }
-//       std::cout << queueBack << std::endl;
    }
 }

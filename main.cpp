@@ -79,14 +79,16 @@ void testCollision(){
 
     delete par1;
     delete par2;
-};
+}
 void testContinuousState(){
     collisions particleList;
 
-    circleParticle * par1 = new circleParticle(0,0,35, 20,50);
-    circleParticle * par2 = new circleParticle(50,0,-35, 20,5);
+    circleParticle * par1 = new circleParticle(0,25,15, 5,10);
+    circleParticle * par2 = new circleParticle(35,25,10, 5,5);
+    circleParticle * par3 = new circleParticle(75, 25, -10, 5, 5);
     particleList.addParticle(par1);
     particleList.addParticle(par2);
+    particleList.addParticle(par3);
 
     timer t_calc;       //Calculate particle state @ 60Hz
     timer t_result;     //To execute something @ 1Hz
@@ -95,43 +97,52 @@ void testContinuousState(){
 
     std::ofstream outfile1("outfile1.txt");
     std::ofstream outfile2("outfile2.txt");
+    std::ofstream outfile3("outfile3.txt");
     double rx = 0;
 
-    std::printf("Simulating...");
+    int totalLoops = 0;
+
+    std::printf("Simulating...\n");
     for(int i = 0; i < 20;){
         if(t_result.isTimeOut(1)){
-//            std::printf("x = %f \ty = %f \tmin = (%f, %f) \tmax = (%f, %f) \tvx = %f \tvy = %f \trotation = %f\n\n",
-//                        par1->getx(), par1->gety(), par1->getMin()[0], par1->getMin()[1],par1->getMax()[0], par1->getMax()[1],
-//                        par1->getvx(), par1->getvy(), par1->getrotation());
-//            outfile << '(' << par1->getx() << ',' << par1->gety() << "),";
+//            outfile1 << '(' << par1->getx() << ',' << par1->gety() << "),";
+//            outfile2 << '(' << par2->getx() << ',' << par2->gety() << "),";
+//            outfile3 << '(' << par3->getx() << ',' << par3->gety() << "),";
             t_result.start();
             ++i;
+            totalLoops++;
         }
 
         if(!t_calc.isTimeOut((double)1/60)) {
             //do something to pass time as a busy-wait or sleep
         } else {
             //Calculate state of particle @60Hz
-            par1->calcSy();
-            par1->calcSx();
-            par2->calcSy();
-            par2->calcSx();
+            for(auto j : particleList.getList()){
+                j->calcSyGravity();
+                j->calcSx();
+            }
+//            par1->calcSyGravity();
+//            par1->calcSx();
+//            par2->calcSyGravity();
+//            par2->calcSx();
 
             particleList.checkForCollision();
             rx += (double) 1/60;
 
             outfile1 << '(' << par1->getx() << ',' << par1->gety() << "),";
             outfile2 << '(' << par2->getx() << ',' << par2->gety() << "),";
+            outfile3 << '(' << par3->getx() << ',' << par3->gety() << "),";
             t_calc.start();
+
+            totalLoops++;
         }
     }
     std::printf("Simulation Finished\n\n");
-    cout << "After Collision\n";
-    std::printf("A:\tvx:%f \tvy:%f \tm:%f\n", par1->getvx(), par1->getvy(), par1->getMass());
-    std::printf("B:\tvx:%f \tvy:%f \tm:%f\n\n", par2->getvx(), par2->getvy(), par2->getMass());
+    cout << "Total Collisions checked: " << particleList.totalCalculations << endl;
+    cout << "Total Loops ran: " << totalLoops << endl;
 
     delete par1;
     delete par2;
     outfile2.close();
     outfile1.close();
-};
+}
