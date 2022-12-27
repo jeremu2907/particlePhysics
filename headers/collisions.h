@@ -10,6 +10,7 @@
 #include <vector>
 #include <algorithm>
 #include "particle.h"
+#include "circleParticle.h"
 
 class collisions{
     private:
@@ -20,14 +21,15 @@ class collisions{
         double varianceY;
 
         void insertionSort(std::vector<particle*> &);
+        bool testCollision(particle* A, particle *B);
 
     public:
         collisions(){};
         collisions(particle*p[]);
         ~collisions(){};
 
-        std::vector<particle*>getParticleList(){
-            return (varianceX >= varianceY)? particleListX : particleListY;
+        int getParticleList(){
+            return (varianceX >= varianceY)? 0 : 1;
         }
 
         //Adding new particle to list of particles
@@ -35,7 +37,9 @@ class collisions{
 
         //Resort list
         void updateParticle();
-        void sweep();
+
+        //Check for Collision
+        void checkForCollision();
 };
 
 #endif //PARTICLEPHYSICS_COLLISIONS_H

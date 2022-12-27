@@ -97,11 +97,23 @@ void particle::calcVy(){
 
 void particle::calcSy(){
     this->y += this->vy * DT + 0.5 * G_VAL * DT * DT;
-    particle::calcVy();
+    if(this->y <= 0){
+        this->y *= -1;
+        this->vy *= -1;
+    } else {
+        particle::calcVy();
+    }
     this->calcMinMax();
 }
 
 void particle::calcSx(){
     this->x += this->vx * DT;
+    if(this->x < 0){
+        this->x *= -1;
+        this->vx *= -1;
+    } else if (this->x > 150){
+        this->x = 300 - this->x;
+        this->vx *= -1;
+    }
     this->calcMinMax();
 }

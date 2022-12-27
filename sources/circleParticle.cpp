@@ -16,7 +16,7 @@ void circleParticle::calcMinMax(){
     this->max[1] = this->y + this->radius;
 }
 
-int circleParticle::getRadius(){
+double circleParticle::getShapeCharacteristicValue(){
     return this->radius;
 }
 

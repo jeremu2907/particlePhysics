@@ -38,6 +38,9 @@ class particle{
         double getvy();
         double getrotation();
         double getMass();
+        virtual double getShapeCharacteristicValue(){
+            return 0;
+        };   //Depending on what shape it is, it will return its characteristic value (radius, sideLength, etc)
 
         double* getMin();
         double* getMax();
