@@ -83,7 +83,7 @@ void testCollision(){
 void testContinuousState(){
     collisions particleList;
 
-    circleParticle * par1 = new circleParticle(0,0,35, 20,5);
+    circleParticle * par1 = new circleParticle(0,0,35, 20,50);
     circleParticle * par2 = new circleParticle(50,0,-35, 20,5);
     particleList.addParticle(par1);
     particleList.addParticle(par2);
@@ -98,7 +98,7 @@ void testContinuousState(){
     double rx = 0;
 
     std::printf("Simulating...");
-    for(int i = 0; i < 7;){
+    for(int i = 0; i < 20;){
         if(t_result.isTimeOut(1)){
 //            std::printf("x = %f \ty = %f \tmin = (%f, %f) \tmax = (%f, %f) \tvx = %f \tvy = %f \trotation = %f\n\n",
 //                        par1->getx(), par1->gety(), par1->getMin()[0], par1->getMin()[1],par1->getMax()[0], par1->getMax()[1],

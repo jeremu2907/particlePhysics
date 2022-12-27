@@ -53,6 +53,7 @@ class particle{
 
         //Must be inherited because all objects subject to gravity
         void calcSy();
+        void calcSyGravity();
         void calcSx();
 };
 

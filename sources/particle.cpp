@@ -95,13 +95,25 @@ void particle::calcVy(){
     this->vy = G_VAL * DT + vy0;
 }
 
-void particle::calcSy(){
+void particle::calcSyGravity(){
     this->y += this->vy * DT + 0.5 * G_VAL * DT * DT;
     if(this->y <= 0){
         this->y *= -1;
         this->vy *= -1;
     } else {
         particle::calcVy();
+    }
+    this->calcMinMax();
+}
+
+void particle::calcSy(){
+    this->y += this->vy * DT;
+    if(this->y < 0){
+        this->y *= -1;
+        this->vy *= -1;
+    } else if (this->y > 150){
+        this->y = 300 - this->y;
+        this->vy *= -1;
     }
     this->calcMinMax();
 }
