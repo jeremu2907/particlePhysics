@@ -4,8 +4,8 @@
 
 #include "../headers/collisions.h"
 
-collisions::collisions(particle* e[]){
-    for(int i = 0; i < sizeof(*e) / sizeof(e[0]); i++){
+collisions::collisions(std::vector<particle*> e){
+    for(int i = 0; i < e.size(); i++){
         particleListX.push_back(e[i]);
         particleListY.push_back(e[i]);
     }
@@ -93,8 +93,8 @@ void collisions::checkForCollision(){
            if(queueBack - queueFront != 0){     //More than one particle in queue
                while(queueFront < queueBack) {
                    for (int j = queueFront + 1; j <= queueBack; j++) {
-                       if(List[j]->getMin()[axis] > List[queueFront]->getMax()[axis])
-                           break;
+//                       if(List[j]->getMin()[axis] > List[queueFront]->getMax()[axis])
+//                           break;
                        totalCalculations++;
                        if (testCollision(List[queueFront], List[j])) {
                            circleParticle::resolveCollision(dynamic_cast<circleParticle *> (List[queueFront]),

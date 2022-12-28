@@ -1114,6 +1114,18 @@
 			"value" : "/Library/Frameworks/SDL2.framework/Resources/CMake"
 		},
 		{
+			"name" : "SDL2_image_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for SDL2_image."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/Library/Frameworks/SDL2_image.framework/Resources/CMake"
+		},
+		{
 			"name" : "particlePhysics_BINARY_DIR",
 			"properties" : 
 			[

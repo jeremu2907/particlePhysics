@@ -28,11 +28,12 @@ class collisions{
         }
 
     public:
-        int totalCalculations = 0;
+        double totalCalculations = 0;
 
         collisions(){};
-        collisions(particle*p[]);
-        ~collisions(){};
+        collisions(std::vector<particle*>p);
+        ~collisions(){
+        };
 
         std::vector<particle*> getList(){
             return (getParticleList())? particleListY : particleListX;

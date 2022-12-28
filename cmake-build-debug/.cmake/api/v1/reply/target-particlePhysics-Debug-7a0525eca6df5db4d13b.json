@@ -25,13 +25,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 14,
+				"line" : 17,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 15,
+				"line" : 18,
 				"parent" : 0
 			}
 		]
@@ -43,6 +43,14 @@
 			[
 				{
 					"fragment" : "-g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -fcolor-diagnostics"
+				},
+				{
+					"backtrace" : 2,
+					"fragment" : "-F"
+				},
+				{
+					"backtrace" : 2,
+					"fragment" : "/Library/Frameworks/"
 				},
 				{
 					"backtrace" : 2,
@@ -67,6 +75,11 @@
 					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/Library/Frameworks/SDL2.framework"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "/Library/Frameworks/SDL2_image.framework/Headers"
 				}
 			],
 			"language" : "CXX",
@@ -118,6 +131,26 @@
 			{
 				"backtrace" : 2,
 				"fragment" : "SDL2",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-F",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "/Library/Frameworks/",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-framework",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "SDL2_image",
 				"role" : "flags"
 			}
 		],

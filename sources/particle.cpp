@@ -108,11 +108,11 @@ void particle::calcSyGravity(){
 
 void particle::calcSy(){
     this->y += this->vy * DT;
-    if(this->y < 0){
+    if(this->y <= 0 ){
         this->y *= -1;
         this->vy *= -1;
-    } else if (this->y > 150){
-        this->y = 300 - this->y;
+    } else if (this->y >= 100){
+        this->y = 200 - this->y;
         this->vy *= -1;
     }
     this->calcMinMax();
@@ -120,11 +120,11 @@ void particle::calcSy(){
 
 void particle::calcSx(){
     this->x += this->vx * DT;
-    if(this->x < 0){
+    if(this->x <= 0){
         this->x *= -1;
         this->vx *= -1;
-    } else if (this->x > 150){
-        this->x = 300 - this->x;
+    } else if (this->x >= 100){
+        this->x = 200 - this->x;
         this->vx *= -1;
     }
     this->calcMinMax();
