@@ -1,17 +1,11 @@
 # ninja log v5
 3	338	1672345842476059684	CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o	14525fc8a740a95f
-1	70	1672179562681472024	build.ninja	ca74e608f8ebff4a
+1	70	1672347184397346800	build.ninja	ca74e608f8ebff4a
 4	395	1672345842531890415	CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o	88deea9b9f529e8b
-763	807	1672346104473430441	particlePhysics	c9c3255d14afeb7d
+574	619	1672347004830268229	particlePhysics	c9c3255d14afeb7d
 3	742	1672261957546398690	CMakeFiles/particlePhysics.dir/sources/particle.cpp.o	eb6ef5be1e4380b3
-3	762	1672346104425319972	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-3	600	1672346162472178381	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-600	647	1672346162522655245	particlePhysics	c9c3255d14afeb7d
-3	918	1672346262506590411	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-918	980	1672346262571619181	particlePhysics	c9c3255d14afeb7d
-2	561	1672346335888393425	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-561	606	1672346335935771442	particlePhysics	c9c3255d14afeb7d
-3	556	1672346369082302462	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-556	601	1672346369130366182	particlePhysics	c9c3255d14afeb7d
-3	554	1672346390780962157	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-555	600	1672346390829261125	particlePhysics	c9c3255d14afeb7d
+3	574	1672347004782833212	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
+4	987	1672347348083901456	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
+987	1057	1672347348158357484	particlePhysics	c9c3255d14afeb7d
+4	1264	1672347680295823601	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
+1264	1335	1672347680372258816	particlePhysics	c9c3255d14afeb7d

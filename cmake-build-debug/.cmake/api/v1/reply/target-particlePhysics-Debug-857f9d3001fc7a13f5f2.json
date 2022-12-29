@@ -182,7 +182,8 @@
 				1,
 				4,
 				5,
-				6
+				6,
+				8
 			]
 		}
 	],
@@ -231,6 +232,11 @@
 			"compileGroupIndex" : 0,
 			"path" : "sources/collisions.cpp",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "headers/functionals.h",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"

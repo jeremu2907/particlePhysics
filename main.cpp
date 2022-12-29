@@ -8,6 +8,7 @@
 #include "headers/timer.h"
 #include "headers/circleParticle.h"
 #include "headers/collisions.h"
+#include "headers/functionals.h"
 
 using std::cout;
 using std::endl;
@@ -18,93 +19,22 @@ void testCollisionInit();
 void testCollision();
 void testContinuousState();
 
-void DrawCircle(SDL_Renderer * renderer, int32_t centreX, int32_t centreY, int32_t radius)
-{
-    const int32_t diameter = (radius * 2);
-
-    int32_t x = (radius - 1);
-    int32_t y = 0;
-    int32_t tx = 1;
-    int32_t ty = 1;
-    int32_t error = (tx - diameter);
-
-    while (x >= y)
-    {
-        //  Each of the following renders an octant of the circle
-        SDL_RenderDrawPoint(renderer, centreX + x, centreY - y);
-        SDL_RenderDrawPoint(renderer, centreX + x, centreY + y);
-        SDL_RenderDrawPoint(renderer, centreX - x, centreY - y);
-        SDL_RenderDrawPoint(renderer, centreX - x, centreY + y);
-        SDL_RenderDrawPoint(renderer, centreX + y, centreY - x);
-        SDL_RenderDrawPoint(renderer, centreX + y, centreY + x);
-        SDL_RenderDrawPoint(renderer, centreX - y, centreY - x);
-        SDL_RenderDrawPoint(renderer, centreX - y, centreY + x);
-
-        if (error <= 0)
-        {
-            ++y;
-            error += ty;
-            ty += 2;
-        }
-
-        if (error > 0)
-        {
-            --x;
-            tx += 2;
-            error += (tx - diameter);
-        }
-    }
-}
-
 int main(int argc, char *argv[]){
     cout << "Real Time Particle Collision Engine" << endl << endl;
     testContinuousState();
-//testScreen();
-}
-
-void testScreen(){
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window * window = SDL_CreateWindow("Particle Render", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-    SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
-    bool running = true;
-
-    int x = 0;
-    int y = 0;
-
-    while(running)
-    {
-        SDL_Event e;
-        while (SDL_PollEvent(&e))
-        {
-            if(e.type == SDL_QUIT)
-            {
-                running = false;
-                break;
-            }
-            // Handle events
-        }
-        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-        SDL_RenderClear(renderer);
-
-        SDL_SetRenderDrawColor(renderer, 255,255,255,255);
-        SDL_RenderDrawLine(renderer, x++ % 800,y++ % 600, (x++ + 100) % 800,(y++ + 100) % 600);
-        DrawCircle(renderer, 400,300, 1);
-        SDL_RenderPresent(renderer);
-        // "Frame" logic
-    }
 }
 
 void testContinuousState(){
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window * window = SDL_CreateWindow("Particle Render", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, SDL_WINDOW_SHOWN);
+    SDL_Window * window = SDL_CreateWindow("Real-time Simulation", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, SDL_WINDOW_SHOWN);
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     bool running = true;
     std::vector<particle *> list;
 
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-    std::uniform_int_distribution<> xyDistrib(11, 89);
-    std::uniform_int_distribution<> vDistrib(-20, 20);
+    std::uniform_int_distribution<> xyDistrib(0, 100);
+    std::uniform_int_distribution<> vDistrib(0, 0);
     std::uniform_int_distribution<> mDistrib(1,5);
 
     for(int j = 0; j < 50; j++)
@@ -123,10 +53,7 @@ void testContinuousState(){
     timer t_result;     //To execute something @ 1Hz
     t_calc.start();
     t_result.start();
-//
-//    std::ofstream outfile1("outfile1.txt");
-//    std::ofstream outfile2("outfile2.txt");
-//    std::ofstream outfile3("outfile3.txt");
+
     double rx = 0;
 
     double totalLoops = 0;
@@ -155,12 +82,10 @@ void testContinuousState(){
             //do something to pass time as a busy-wait or sleep
         } else {
             //Calculate state of particle @60Hz
-//            cout << "Not passing \n";
             for(auto j : particleList.getList()){
                 j->calcSyGravity();
                 j->calcSx();
             }
-//            cout << "passed\n";
 
             particleList.checkForCollision();
 
@@ -168,15 +93,11 @@ void testContinuousState(){
             SDL_RenderClear(renderer);
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-//            cout << "Not passing \n";
             for(auto j : particleList.getList()){
-                DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), 8);
+                functionals::DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), 8);
             }
-//            cout << "passed\n";
             SDL_RenderPresent(renderer);
-//            outfile1 << '(' << par1->getx() << ',' << par1->gety() << "),";
-//            outfile2 << '(' << par2->getx() << ',' << par2->gety() << "),";
-//            outfile3 << '(' << par3->getx() << ',' << par3->gety() << "),";
+
             t_calc.start();
             rx += (double) 1/60;
             totalLoops++;
@@ -189,8 +110,40 @@ void testContinuousState(){
     for(auto j : particleList.getList()){
         std::printf("vx: %f \t vy:%f\n", j->getvx(), j->getvy());
     }
-    cout << "Total Collisions checked: " << particleList.totalCalculations << endl;
+    cout << "\nTotal Collisions checked: " << particleList.totalCalculations << endl;
     cout << "Total Loops ran: " << totalLoops << endl;
 //    outfile2.close();
 //    outfile1.close();
+}
+
+void testScreen(){
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window * window = SDL_CreateWindow("Particle Render", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+    SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
+    bool running = true;
+
+    int x = 0;
+    int y = 0;
+
+    while(running)
+    {
+        SDL_Event e;
+        while (SDL_PollEvent(&e))
+        {
+            if(e.type == SDL_QUIT)
+            {
+                running = false;
+                break;
+            }
+            // Handle events
+        }
+        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+        SDL_RenderClear(renderer);
+
+        SDL_SetRenderDrawColor(renderer, 255,255,255,255);
+        SDL_RenderDrawLine(renderer, x++ % 800,y++ % 600, (x++ + 100) % 800,(y++ + 100) % 600);
+        functionals::DrawCircle(renderer, 400,300, 1);
+        SDL_RenderPresent(renderer);
+        // "Frame" logic
+    }
 }
