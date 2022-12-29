@@ -105,9 +105,18 @@ void testContinuousState(){
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> xyDistrib(11, 89);
     std::uniform_int_distribution<> vDistrib(-20, 20);
+    std::uniform_int_distribution<> mDistrib(1,5);
 
-    for(int j = 0; j < 4; j++)
+    for(int j = 0; j < 50; j++)
         list.push_back(new circleParticle(xyDistrib(gen),xyDistrib(gen),vDistrib(gen),vDistrib(gen),1));
+//    list.push_back(new circleParticle(20,50, 20, 0,1));
+//    list.push_back(new circleParticle(30,45,0,0,1));
+//    list.push_back(new circleParticle(40,40, 0, 0,1));
+//    list.push_back(new circleParticle(50,35, 0,0 ,1));
+//    list.push_back(new circleParticle(60,30, 0, 0,1));
+//    list.push_back(new circleParticle(70,25, 0, 0,1));
+//    list.push_back(new circleParticle(80,20,0,0,1));
+//    list.push_back(new circleParticle(90,15,0,0,1));
     collisions particleList(list);
 
     timer t_calc;       //Calculate particle state @ 60Hz
@@ -161,7 +170,7 @@ void testContinuousState(){
 
 //            cout << "Not passing \n";
             for(auto j : particleList.getList()){
-                DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), 64);
+                DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), 8);
             }
 //            cout << "passed\n";
             SDL_RenderPresent(renderer);
@@ -176,6 +185,10 @@ void testContinuousState(){
 //    SDL_RenderClear(renderer);
     running = false;
     std::printf("Simulation Finished\n\n");
+    std::printf("Final States: \n");
+    for(auto j : particleList.getList()){
+        std::printf("vx: %f \t vy:%f\n", j->getvx(), j->getvy());
+    }
     cout << "Total Collisions checked: " << particleList.totalCalculations << endl;
     cout << "Total Loops ran: " << totalLoops << endl;
 //    outfile2.close();

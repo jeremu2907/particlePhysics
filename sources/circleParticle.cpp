@@ -49,31 +49,49 @@ double* circleParticle::intermediateV(double v1, double v2, double m1, double m2
 
 void circleParticle::resolveCollision(circleParticle *A, circleParticle *B) {
     //Find Tangent vector
+//    std::cout << "Stats_________________________\n";
     double tanX = - (B->gety() - A->gety());
     double tanY = B->getx() - A->getx();
     double magTanSq = tanX * tanX + tanY * tanY;
 
+//    std::cout << "Tangent Vector: " << tanX << '\t' << tanY << std::endl << std::endl;
+
     //Find dot product of component B/A in respect to tan vector
-    double ABDotTan = A->getvx() * tanX + A->getvy() * tanY;
+    double ADotTan = A->getvx() * tanX + A->getvy() * tanY;
+    double BDotTan = B->getvx() * tanX + B->getvy() * tanY;
+//    std::cout << "A Dot Tan " << ADotTan << "\t B Dot Tan " << BDotTan << std::endl << std::endl;
     //Parralel vector of AB in the direction of tan vector
-    double paraABX = (ABDotTan / (magTanSq)) * tanX;
-    double paraABY = (ABDotTan / (magTanSq)) * tanY;
+    double paraAX = (ADotTan / (magTanSq)) * tanX;
+    double paraAY = (ADotTan / (magTanSq)) * tanY;
+    double paraBX = (BDotTan / (magTanSq)) * tanX;
+    double paraBY = (BDotTan / (magTanSq)) * tanY;
+
+//    std::cout << "A Parallel tan: " << paraAX << ", " << paraAY << std::endl;
+//    std::cout << "B Parallel tan: " << paraBX << ", " << paraBY << std::endl << std::endl;
 
     //Calculating perpendicular vector in respect to tan vector, taking into account mass to conservee momentum
     //Momentum is conserved in its own respective axis (DO NOT CHECK BY DOING PYTHAGOREAN THEOREM BC IT WILL SEEM WRONG
     //Function out put the change in V_axis [vA, vB]
-    double * X = intermediateV(A->getvx() - paraABX, B->getvx() - paraABX, A->getMass(), B->getMass());
-    double perpAX = (X[0]);
-    double perpBX = (X[1]);
-    double * Y = intermediateV(A->getvy() - paraABY, B->getvy() - paraABY, A->getMass(), B->getMass());
-    double perpAY = (Y[0]);
-    double perpBY = (Y[1]);
+//    double * X = intermediateV(A->getvx() - paraBX, B->getvx() - paraABX, A->getMass(), B->getMass());
+//    double * X = intermediateV(A->getvx() - paraAX, B->getvx() - paraBX, A->getMass(), B->getMass());
+//    double perpAX = (X[0]);
+//    double perpBX = (X[1]);
+//    double * Y = intermediateV(A->getvy() - paraAY, B->getvy() - paraBY, A->getMass(), B->getMass());
+//    double perpAY = (Y[0]);
+//    double perpBY = (Y[1]);
+    double perpAX = A->getvx() - paraAX;
+    double perpAY = A->getvy() - paraAY;
+    double perpBX = B->getvx() - paraBX;
+    double perpBY = B->getvy() - paraBY;
 
-    A->setvx(paraABX + perpAX);
-    A->setvy(paraABY + perpAY);
-    B->setvx(paraABX + perpBX);
-    B->setvy(paraABY + perpBY);
+//    std::cout << "A Perp tan: " << perpAX << ", " << perpAY << std::endl;
+//    std::cout << "B Perp tan: " << perpBX << ", " << perpBY << std::endl;
 
-    delete X;
-    delete Y;
+    A->setvx(paraAX + perpBX);
+    A->setvy(paraAY + perpBY);
+    B->setvx(paraBX + perpAX);
+    B->setvy(paraBY + perpAY);
+
+//    delete X;
+//    delete Y;
 }

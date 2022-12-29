@@ -100,6 +100,9 @@ void particle::calcSyGravity(){
     if(this->y <= 0){
         this->y *= -1;
         this->vy *= -1;
+    } else if (this->y >= 100){
+        this->y = 200 - this->y;
+        this->vy *= -1;
     } else {
         particle::calcVy();
     }

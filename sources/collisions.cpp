@@ -69,7 +69,7 @@ bool collisions::testCollision(particle *A, particle *B) {
 
 //    std::printf("dqdist: %f       sqDiff: %f\n", sqDist, sqDiffCenter);
 
-    if(sqDist <= sqDiffCenter)
+    if(sqDist < sqDiffCenter)
         return true;
     else
         return false;
@@ -99,6 +99,7 @@ void collisions::checkForCollision(){
                        if (testCollision(List[queueFront], List[j])) {
                            circleParticle::resolveCollision(dynamic_cast<circleParticle *> (List[queueFront]),
                                                             dynamic_cast<circleParticle *> (List[j]));
+//                           std::cout << "Collision";
                        }
                    }
                    queueFront++;

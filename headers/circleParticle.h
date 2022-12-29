@@ -7,7 +7,7 @@
 
 class circleParticle : public particle {
     private:
-        double radius = 8;
+        double radius = 1;
 
         void calcMinMax() override;
         static double* intermediateV(double, double, double, double); //Helper function for circleParticle::resolveCollision
