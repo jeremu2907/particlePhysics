@@ -34,10 +34,10 @@ void testContinuousState(){
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> xyDistrib(0, 100);
-    std::uniform_int_distribution<> vDistrib(0, 0);
+    std::uniform_int_distribution<> vDistrib(-5, 5);
     std::uniform_int_distribution<> mDistrib(1,5);
 
-    for(int j = 0; j < 50; j++)
+    for(int j = 0; j < 100; j++)
         list.push_back(new circleParticle(xyDistrib(gen),xyDistrib(gen),vDistrib(gen),vDistrib(gen),1));
 //    list.push_back(new circleParticle(20,50, 20, 0,1));
 //    list.push_back(new circleParticle(30,45,0,0,1));
@@ -83,11 +83,12 @@ void testContinuousState(){
         } else {
             //Calculate state of particle @60Hz
             for(auto j : particleList.getList()){
-                j->calcSyGravity();
+                j->calcSy();
                 j->calcSx();
             }
 
             particleList.checkForCollision();
+            particleList.updateParticle();
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);

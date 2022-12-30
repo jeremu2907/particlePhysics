@@ -20,7 +20,7 @@ class collisions{
         double varianceX;
         double varianceY;
 
-        void insertionSort(std::vector<particle*> &);
+        void insertionSort(std::vector<particle*> &, int axis);
         bool testCollision(particle* A, particle *B);
 
         int getParticleList(){

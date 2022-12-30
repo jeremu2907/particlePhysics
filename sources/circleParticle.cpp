@@ -83,14 +83,24 @@ void circleParticle::resolveCollision(circleParticle *A, circleParticle *B) {
     double perpAY = A->getvy() - paraAY;
     double perpBX = B->getvx() - paraBX;
     double perpBY = B->getvy() - paraBY;
+//    double* X = circleParticle::intermediateV(perpAX, perpBX, A->getMass(), B->getMass());
+//    double* Y = circleParticle::intermediateV(perpAY, perpBY, A->getMass(), B->getMass());
 
 //    std::cout << "A Perp tan: " << perpAX << ", " << perpAY << std::endl;
 //    std::cout << "B Perp tan: " << perpBX << ", " << perpBY << std::endl;
+//
+//    std::cout << X[0] << '\t' << Y[0] << std::endl;
+//    std::cout << X[1] << '\t' << Y[1] << std::endl;
 
     A->setvx(paraAX + perpBX);
     A->setvy(paraAY + perpBY);
     B->setvx(paraBX + perpAX);
     B->setvy(paraBY + perpAY);
+
+//    A->setvx(paraAX + Y[1]);
+//    A->setvy(paraAY + X[0]);
+//    B->setvx(paraBX + X[1]);
+//    B->setvy(paraBY + Y[0]);
 
 //    delete X;
 //    delete Y;
