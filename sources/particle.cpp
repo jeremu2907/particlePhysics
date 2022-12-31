@@ -16,6 +16,7 @@ particle::particle(double x, double y){
     this->vy = 0.0;
     this->rotation = 0.0;
     this->mass = 1.0;
+    this->coefficientOfRestitution = 1;
 }
 
 particle::particle(double x, double y, double vx, double vy){
@@ -26,6 +27,7 @@ particle::particle(double x, double y, double vx, double vy){
     this->vy = vy;
     this->rotation = 0.0;
     this->mass = 1.0;
+    this->coefficientOfRestitution = 1;
 }
 
 particle::particle(double x, double y, double vx, double vy, double mass){
@@ -36,6 +38,18 @@ particle::particle(double x, double y, double vx, double vy, double mass){
     this->vy = vy;
     this->rotation = 0.0;
     this->mass = mass;
+    this->coefficientOfRestitution = 1;
+}
+
+particle::particle(double x, double y, double vx, double vy, double mass, float restitution){
+    particle();
+    this->x = x;
+    this->y = y;
+    this->vx = vx;
+    this->vy = vy;
+    this->rotation = 0.0;
+    this->mass = mass;
+    this->coefficientOfRestitution = restitution;
 }
 
 double particle::getx(){
@@ -95,14 +109,24 @@ void particle::calcVy(){
     this->vy = G_VAL * DT + vy0;
 }
 
+void particle::calcRestitutionX() {
+    this->vx *= coefficientOfRestitution;
+}
+
+void particle::calcRestitutionY() {
+    this->vy *= coefficientOfRestitution;
+}
+
 void particle::calcSyGravity(){
     this->y += this->vy * DT + 0.5 * G_VAL * DT * DT;
     if(this->y <= 0){
         this->y *= -1;
         this->vy *= -1;
+        this->calcRestitutionY();
     } else if (this->y >= 100){
         this->y = 200 - this->y;
         this->vy *= -1;
+        this->calcRestitutionY();
     } else {
         particle::calcVy();
     }
@@ -114,9 +138,11 @@ void particle::calcSy(){
     if(this->y <= 0 ){
         this->y *= -1;
         this->vy *= -1;
+        this->calcRestitutionY();
     } else if (this->y >= 100){
         this->y = 200 - this->y;
         this->vy *= -1;
+        this->calcRestitutionY();
     }
     this->calcMinMax();
 }
@@ -126,9 +152,11 @@ void particle::calcSx(){
     if(this->x <= 0){
         this->x *= -1;
         this->vx *= -1;
+        this->calcRestitutionX();
     } else if (this->x >= 100){
         this->x = 200 - this->x;
         this->vx *= -1;
+        this->calcRestitutionX();
     }
     this->calcMinMax();
 }

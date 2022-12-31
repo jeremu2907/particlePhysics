@@ -16,6 +16,7 @@ class collisions{
     private:
         std::vector<particle*> particleListX;
         std::vector<particle*> particleListY;
+        float coefOfRestitution = 1;    //[0,1] perfect inelastic - perfect elastic
 
         double varianceX;
         double varianceY;
@@ -31,9 +32,8 @@ class collisions{
         double totalCalculations = 0;
 
         collisions(){};
-        collisions(std::vector<particle*>p);
-        ~collisions(){
-        };
+        collisions(std::vector<particle*>);
+        ~collisions(){};
 
         std::vector<particle*> getList(){
             return (getParticleList())? particleListY : particleListX;

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include "SDL2/SDL.h"
-#include "SDL_image.h"
 #include <thread>
 #include <random>
 
@@ -15,8 +14,6 @@ using std::endl;
 
 //Unit Tests
 void testScreen();
-void testCollisionInit();
-void testCollision();
 void testContinuousState();
 
 int main(int argc, char *argv[]){
@@ -30,23 +27,23 @@ void testContinuousState(){
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     bool running = true;
     std::vector<particle *> list;
+    const float RESTITUTION = 0.8;
 
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> xyDistrib(0, 100);
-    std::uniform_int_distribution<> vDistrib(-5, 5);
-    std::uniform_int_distribution<> mDistrib(1,5);
+    std::uniform_int_distribution<> vDistrib(-20, 20);
+    std::uniform_int_distribution<> mDistrib(1,3);
 
-    for(int j = 0; j < 100; j++)
-        list.push_back(new circleParticle(xyDistrib(gen),xyDistrib(gen),vDistrib(gen),vDistrib(gen),1));
-//    list.push_back(new circleParticle(20,50, 20, 0,1));
-//    list.push_back(new circleParticle(30,45,0,0,1));
-//    list.push_back(new circleParticle(40,40, 0, 0,1));
-//    list.push_back(new circleParticle(50,35, 0,0 ,1));
-//    list.push_back(new circleParticle(60,30, 0, 0,1));
-//    list.push_back(new circleParticle(70,25, 0, 0,1));
-//    list.push_back(new circleParticle(80,20,0,0,1));
-//    list.push_back(new circleParticle(90,15,0,0,1));
+//    for(int j = 0; j <= 100; j += 20) {\
+//        for(int k = 0; k <= 100; k += 20)
+//            list.push_back(new circleParticle(j, k, vDistrib(gen), vDistrib(gen), mDistrib(gen), RESTITUTION));
+//    }
+    list.push_back(new circleParticle(30,60, -20, 0,5, RESTITUTION));
+    list.push_back(new circleParticle(70,60,0,0,1,RESTITUTION));
+    list.push_back(new circleParticle(40,60, 0, 0,1,RESTITUTION));
+    list.push_back(new circleParticle(50,60,0,0,1,RESTITUTION));
+    list.push_back(new circleParticle(80,60, 0, 0,1,RESTITUTION));
     collisions particleList(list);
 
     timer t_calc;       //Calculate particle state @ 60Hz
@@ -59,7 +56,7 @@ void testContinuousState(){
     double totalLoops = 0;
 
     std::printf("Simulating...\n");
-    for(int i = 0; i < 300 && running;){
+    for(int i = 0; i < 100 && running;){
 
         SDL_Event e;
         while (SDL_PollEvent(&e))
@@ -82,20 +79,20 @@ void testContinuousState(){
             //do something to pass time as a busy-wait or sleep
         } else {
             //Calculate state of particle @60Hz
+            particleList.updateParticle();
+            particleList.checkForCollision();
+
             for(auto j : particleList.getList()){
                 j->calcSy();
                 j->calcSx();
             }
-
-            particleList.checkForCollision();
-            particleList.updateParticle();
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
             for(auto j : particleList.getList()){
-                functionals::DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), 8);
+                functionals::DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), j->getShapeCharacteristicValue() * 8);
             }
             SDL_RenderPresent(renderer);
 
@@ -108,9 +105,14 @@ void testContinuousState(){
     running = false;
     std::printf("Simulation Finished\n\n");
     std::printf("Final States: \n");
+    double netVX = 0;
+    double netVY = 0;
     for(auto j : particleList.getList()){
+        netVX += j->getvx();
+        netVY += j->getvy();
         std::printf("vx: %f \t vy:%f\n", j->getvx(), j->getvy());
     }
+    std::printf("Total vx: %f \t vy:%f\n", netVX, netVY);
     cout << "\nTotal Collisions checked: " << particleList.totalCalculations << endl;
     cout << "Total Loops ran: " << totalLoops << endl;
 //    outfile2.close();
