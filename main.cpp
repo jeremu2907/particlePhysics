@@ -27,23 +27,22 @@ void testContinuousState(){
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     bool running = true;
     std::vector<particle *> list;
-    const float RESTITUTION = 0.8;
 
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> xyDistrib(0, 100);
     std::uniform_int_distribution<> vDistrib(-20, 20);
-    std::uniform_int_distribution<> mDistrib(1,3);
+    std::uniform_int_distribution<> mDistrib(1,10);
 
-//    for(int j = 0; j <= 100; j += 20) {\
-//        for(int k = 0; k <= 100; k += 20)
-//            list.push_back(new circleParticle(j, k, vDistrib(gen), vDistrib(gen), mDistrib(gen), RESTITUTION));
-//    }
-    list.push_back(new circleParticle(30,60, -20, 0,5, RESTITUTION));
-    list.push_back(new circleParticle(70,60,0,0,1,RESTITUTION));
-    list.push_back(new circleParticle(40,60, 0, 0,1,RESTITUTION));
-    list.push_back(new circleParticle(50,60,0,0,1,RESTITUTION));
-    list.push_back(new circleParticle(80,60, 0, 0,1,RESTITUTION));
+    for(int j = 0; j <= 100; j += 50) {
+        for(int k = 0; k <= 100; k += 50)
+            list.push_back(new circleParticle(j, k, vDistrib(gen), vDistrib(gen), mDistrib(gen)));
+    }
+//    list.push_back(new circleParticle(10,60, 20, 0,50));
+//    list.push_back(new circleParticle(90,48,-20,30,10));
+//    list.push_back(new circleParticle(40,60, 0, 0,50));
+//    list.push_back(new circleParticle(50,60,0,0,1));
+//    list.push_back(new circleParticle(80,60, 0, 0,1));
     collisions particleList(list);
 
     timer t_calc;       //Calculate particle state @ 60Hz
@@ -56,7 +55,7 @@ void testContinuousState(){
     double totalLoops = 0;
 
     std::printf("Simulating...\n");
-    for(int i = 0; i < 100 && running;){
+    for(int i = 0; i < 1000 && running;){
 
         SDL_Event e;
         while (SDL_PollEvent(&e))

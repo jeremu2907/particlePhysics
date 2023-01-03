@@ -1,19 +1,9 @@
 # ninja log v5
-6	711	1672447998572493426	CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o	14525fc8a740a95f
+3	983	1672717463036844767	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
+694	764	1672717716403343425	particlePhysics	c9c3255d14afeb7d
+4	704	1672716092362422491	CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o	88deea9b9f529e8b
 1	70	1672347184397346800	build.ninja	ca74e608f8ebff4a
-7	742	1672447998605703361	CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o	88deea9b9f529e8b
-958	1027	1672448275607763576	particlePhysics	c9c3255d14afeb7d
-4	782	1672447859528258898	CMakeFiles/particlePhysics.dir/sources/particle.cpp.o	eb6ef5be1e4380b3
-2	958	1672448275535211325	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-3	956	1672448412617389600	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-956	1025	1672448412690177597	particlePhysics	c9c3255d14afeb7d
-3	966	1672448482358450592	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-966	1036	1672448482432480939	particlePhysics	c9c3255d14afeb7d
-3	1279	1672448498814025385	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-1279	1356	1672448498894658103	particlePhysics	c9c3255d14afeb7d
-4	594	1672448547145909969	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-594	642	1672448547196695270	particlePhysics	c9c3255d14afeb7d
-4	706	1672448656065411088	CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o	14525fc8a740a95f
-706	775	1672448656138100469	particlePhysics	c9c3255d14afeb7d
-3	628	1672448695207612862	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
-628	679	1672448695261270513	particlePhysics	c9c3255d14afeb7d
+6	1133	1672711145906620151	CMakeFiles/particlePhysics.dir/sources/particle.cpp.o	eb6ef5be1e4380b3
+3	694	1672717716329752327	CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o	14525fc8a740a95f
+3	983	1672717769250404542	CMakeFiles/particlePhysics.dir/main.cpp.o	1a5d95ddd5beaa19
+983	1053	1672717769325241295	particlePhysics	c9c3255d14afeb7d

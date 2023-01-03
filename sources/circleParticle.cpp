@@ -9,11 +9,6 @@ circleParticle::circleParticle(double x, double y, double vx, double vy, double 
     circleParticle::calcMinMax();
 }
 
-circleParticle::circleParticle(double x, double y, double vx, double vy, double mass, float restitution) : particle(x, y, vx, vy, mass, restitution) {
-    this->radius += mass/10;
-    circleParticle::calcMinMax();
-}
-
 void circleParticle::calcMinMax(){
     this->min[0] = this->x - this->radius;
     this->min[1] = this->y - this->radius;
@@ -47,8 +42,8 @@ void circleParticle::resolveCollisionDirect(circleParticle *A, circleParticle *B
 double* circleParticle::intermediateV(double v1, double v2, double m1, double m2) {
     double sumM = m1 + m2;
     double p = v1 * m1 + v2 * m2;
-    double v_2 = (p + (v2-v1) * m1)/sumM;
-    double v_1 = (p - m2*v_2)/m1;
+    double v_1 = (p + (v2-v1) * m2)/sumM;
+    double v_2 = v1+v_1-v2;
 
     return new double[2] {v_1, v_2};
 }
@@ -72,9 +67,6 @@ void circleParticle::resolveCollision(circleParticle *A, circleParticle *B) {
     double paraBX = (BDotTan / (magTanSq)) * tanX;
     double paraBY = (BDotTan / (magTanSq)) * tanY;
 
-//    std::cout << "A Parallel tan: " << paraAX << ", " << paraAY << std::endl;
-//    std::cout << "B Parallel tan: " << paraBX << ", " << paraBY << std::endl << std::endl;
-
     //Calculating perpendicular vector in respect to tan vector, taking into account mass to conservee momentum
     //Momentum is conserved in its own respective axis (DO NOT CHECK BY DOING PYTHAGOREAN THEOREM BC IT WILL SEEM WRONG
     //Function out put the change in V_axis [vA, vB]
@@ -85,19 +77,14 @@ void circleParticle::resolveCollision(circleParticle *A, circleParticle *B) {
     double* X = circleParticle::intermediateV(perpAX, perpBX, A->getMass(), B->getMass());
     double* Y = circleParticle::intermediateV(perpAY, perpBY, A->getMass(), B->getMass());
 
-//    A->setvx(paraAX + perpBX);
-//    A->setvy(paraAY + perpBY);
-//    B->setvx(paraBX + perpAX);
-//    B->setvy(paraBY + perpAY);
-
-    A->setvx(paraAX + X[1]);
-    if(X[1] != 0.000000000001) A->calcRestitutionX();
-    A->setvy(paraAY + Y[1]);
-    if(Y[1] != 0.000000000001) A->calcRestitutionY();
-    B->setvx(paraBX + X[0]);
-    if(X[0] != 0.000000000001) B->calcRestitutionX();
-    B->setvy(paraBY + Y[0]);
-    if(Y[0] != 0.000000000001) B->calcRestitutionY();
+    A->setvx(paraAX + X[0]);
+//    if(X[0] > 0.000000001) A->setvx(A->getvx() * 0.8);
+    A->setvy(paraAY + Y[0]);
+//    if(Y[0] > 0.000000001) A->setvy(A->getvy() * 0.8);
+    B->setvx(paraBX + X[1]);
+//    if(X[1] > 0.000000001) B->setvx(B->getvx() * 0.8);
+    B->setvy(paraBY + Y[1]);
+//    if(Y[1] > 0.000000001) B->setvy(B->getvy() * 0.8);
 
     delete X;
     delete Y;

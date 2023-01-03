@@ -14,7 +14,6 @@ class particle{
         double x, y, mass;             //Center (x,y), mass
         double vx, vy;    //current and prev Velocity
         double rotation;            //angle of rotation
-        float coefficientOfRestitution;
 
         //Calculate min max points of hit box, to be overridden because difference of shapes
         virtual void calcMinMax(){};
@@ -28,7 +27,6 @@ class particle{
         particle(double x, double y);
         particle(double x, double y, double vx, double vy);
         particle(double x, double y, double vx, double vy, double rotation);
-        particle(double x, double y, double vx, double vy, double rotation, float restitution);
 
         ~particle(){};
 
@@ -50,16 +48,12 @@ class particle{
         void setvx(double e);
         void setvy(double e);
         void setrotation(double e);
-        void setCoefficientOfRestitution(float e);
 
         //Must be inherited because all objects subject to gravity
         void calcSy();
         void calcSyGravity();
         void calcSx();
 
-        //Used for when there is some kind of collision
-        void calcRestitutionX();
-        void calcRestitutionY();
 };
 
 #endif
