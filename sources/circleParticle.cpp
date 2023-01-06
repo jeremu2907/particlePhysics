@@ -9,6 +9,11 @@ circleParticle::circleParticle(double x, double y, double vx, double vy, double 
     circleParticle::calcMinMax();
 }
 
+circleParticle::circleParticle(double x, double y, double vx, double vy, double mass,float restitution) : particle(x, y, vx, vy, mass,restitution) {
+    this->radius += mass/10;
+    circleParticle::calcMinMax();
+}
+
 void circleParticle::calcMinMax(){
     this->min[0] = this->x - this->radius;
     this->min[1] = this->y - this->radius;
@@ -49,19 +54,25 @@ double* circleParticle::intermediateV(double v1, double v2, double m1, double m2
 }
 
 void circleParticle::resolveCollision(circleParticle *A, circleParticle *B) {
+//    //separating the particles
+//    //Find center separation vector
+//    double sepX = B->getx() - A->getx();
+//    double sepY = B->gety() - A->gety();
+//    double sepMagSq = sepX * sepX + sepY * sepY;
+//    sepX /= sqrt(sepMagSq);
+//    sepY /= sqrt(sepMagSq);
+//    sepX *= (A->getShapeCharacteristicValue() + B->getShapeCharacteristicValue());
+//    sepY *= (A->getShapeCharacteristicValue() + B->getShapeCharacteristicValue());
+
     //Find Tangent vector
-//    std::cout << "Stats_________________________\n";
     double tanX = - (B->gety() - A->gety());
     double tanY = B->getx() - A->getx();
     double magTanSq = tanX * tanX + tanY * tanY;
 
-//    std::cout << "Tangent Vector: " << tanX << '\t' << tanY << std::endl << std::endl;
-
     //Find dot product of component B/A in respect to tan vector
     double ADotTan = A->getvx() * tanX + A->getvy() * tanY;
     double BDotTan = B->getvx() * tanX + B->getvy() * tanY;
-//    std::cout << "A Dot Tan " << ADotTan << "\t B Dot Tan " << BDotTan << std::endl << std::endl;
-    //Parralel vector of AB in the direction of tan vector
+    //Parallel vector of AB in the direction of tan vector
     double paraAX = (ADotTan / (magTanSq)) * tanX;
     double paraAY = (ADotTan / (magTanSq)) * tanY;
     double paraBX = (BDotTan / (magTanSq)) * tanX;
@@ -78,13 +89,13 @@ void circleParticle::resolveCollision(circleParticle *A, circleParticle *B) {
     double* Y = circleParticle::intermediateV(perpAY, perpBY, A->getMass(), B->getMass());
 
     A->setvx(paraAX + X[0]);
-//    if(X[0] > 0.000000001) A->setvx(A->getvx() * 0.8);
+    if(X[0] > 0.000000001) A->setvx(A->getvx() * particle::RESTITUTION);
     A->setvy(paraAY + Y[0]);
-//    if(Y[0] > 0.000000001) A->setvy(A->getvy() * 0.8);
+    if(Y[0] > 0.000000001) A->setvy(A->getvy() * particle::RESTITUTION);
     B->setvx(paraBX + X[1]);
-//    if(X[1] > 0.000000001) B->setvx(B->getvx() * 0.8);
+    if(X[1] > 0.000000001) B->setvx(B->getvx() * particle::RESTITUTION);
     B->setvy(paraBY + Y[1]);
-//    if(Y[1] > 0.000000001) B->setvy(B->getvy() * 0.8);
+    if(Y[1] > 0.000000001) B->setvy(B->getvy() * particle::RESTITUTION);
 
     delete X;
     delete Y;

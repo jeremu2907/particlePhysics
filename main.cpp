@@ -14,35 +14,43 @@ using std::endl;
 
 //Unit Tests
 void testScreen();
-void testContinuousState();
+void testContinuousState(int);
+void getNextState();
 
 int main(int argc, char *argv[]){
     cout << "Real Time Particle Collision Engine" << endl << endl;
-    testContinuousState();
+    testContinuousState(5);
 }
 
-void testContinuousState(){
+void getNextState(){
+
+}
+
+void testContinuousState(int seconds){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window * window = SDL_CreateWindow("Real-time Simulation", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, SDL_WINDOW_SHOWN);
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     bool running = true;
     std::vector<particle *> list;
+    const float RESTITUTION = 1;
 
+    //Generation list of objects
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> xyDistrib(0, 100);
-    std::uniform_int_distribution<> vDistrib(-20, 20);
+    std::uniform_int_distribution<> vXDistrib(-30, 30);
+    std::uniform_int_distribution<> vYDistrib(-30, 30);
     std::uniform_int_distribution<> mDistrib(1,10);
-
-    for(int j = 0; j <= 100; j += 50) {
-        for(int k = 0; k <= 100; k += 50)
-            list.push_back(new circleParticle(j, k, vDistrib(gen), vDistrib(gen), mDistrib(gen)));
+    for(int j = 0; j <= 100; j += 10) {
+        for(int k = 0; k <= 100; k+= 10)
+            list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), mDistrib(gen),RESTITUTION));
     }
-//    list.push_back(new circleParticle(10,60, 20, 0,50));
-//    list.push_back(new circleParticle(90,48,-20,30,10));
-//    list.push_back(new circleParticle(40,60, 0, 0,50));
-//    list.push_back(new circleParticle(50,60,0,0,1));
-//    list.push_back(new circleParticle(80,60, 0, 0,1));
+//    list.push_back(new circleParticle(70,20, -10, 0,50,RESTITUTION));
+//    list.push_back(new circleParticle(50,0,0,0,50));
+//    list.push_back(new circleParticle(50,80, 0, 0,50));
+//    list.push_back(new circleParticle(50,40,0,0,20));
+//    list.push_back(new circleParticle(20,20, 0, 0,1,RESTITUTION));
+//    list.push_back(new circleParticle(50,1, 0, 0,10));
     collisions particleList(list);
 
     timer t_calc;       //Calculate particle state @ 60Hz
@@ -51,11 +59,10 @@ void testContinuousState(){
     t_result.start();
 
     double rx = 0;
-
     double totalLoops = 0;
 
     std::printf("Simulating...\n");
-    for(int i = 0; i < 1000 && running;){
+    for(int i = 0; i < seconds && running;){
 
         SDL_Event e;
         while (SDL_PollEvent(&e))
@@ -103,19 +110,15 @@ void testContinuousState(){
 //    SDL_RenderClear(renderer);
     running = false;
     std::printf("Simulation Finished\n\n");
-    std::printf("Final States: \n");
-    double netVX = 0;
-    double netVY = 0;
+
+    std::ofstream outfile("final_state.txt");
     for(auto j : particleList.getList()){
-        netVX += j->getvx();
-        netVY += j->getvy();
-        std::printf("vx: %f \t vy:%f\n", j->getvx(), j->getvy());
+        outfile << j->getvx() << ',' << j->getvy() << '\n';
     }
-    std::printf("Total vx: %f \t vy:%f\n", netVX, netVY);
-    cout << "\nTotal Collisions checked: " << particleList.totalCalculations << endl;
-    cout << "Total Loops ran: " << totalLoops << endl;
-//    outfile2.close();
-//    outfile1.close();
+    outfile.close();
+
+    cout << "\nTotal Collisions: " << particleList.totalCalculations << endl;
+    cout << "Total Loops Ran: " << totalLoops << endl;
 }
 
 void testScreen(){

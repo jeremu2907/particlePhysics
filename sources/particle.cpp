@@ -1,5 +1,9 @@
 #include "../headers/particle.h"
 
+const double particle::G_VAL = - 9.807;
+const double particle::DT = (double)1 / 60;
+float particle::RESTITUTION = 1;
+
 particle::particle(){
     this->x = 0.0;
     this->y = 0.0;
@@ -36,7 +40,17 @@ particle::particle(double x, double y, double vx, double vy, double mass){
     this->vy = vy;
     this->rotation = 0.0;
     this->mass = mass;
+}
 
+particle::particle(double x, double y, double vx, double vy, double mass,float restitution){
+    particle();
+    this->x = x;
+    this->y = y;
+    this->vx = vx;
+    this->vy = vy;
+    this->rotation = 0.0;
+    this->mass = mass;
+    particle::RESTITUTION = restitution;
 }
 
 double particle::getx(){
@@ -101,9 +115,11 @@ void particle::calcSyGravity(){
     if(this->y <= 0){
         this->y *= -1;
         this->vy *= -1;
+        this->vy *= RESTITUTION;
     } else if (this->y >= 100){
         this->y = 200 - this->y;
         this->vy *= -1;
+        this->vy *= RESTITUTION;
     } else {
         particle::calcVy();
     }
@@ -115,9 +131,11 @@ void particle::calcSy(){
     if(this->y <= 0 ){
         this->y *= -1;
         this->vy *= -1;
+        this->vy *= RESTITUTION;
     } else if (this->y >= 100){
         this->y = 200 - this->y;
         this->vy *= -1;
+        this->vy *= RESTITUTION;
     }
     this->calcMinMax();
 }
@@ -127,9 +145,11 @@ void particle::calcSx(){
     if(this->x <= 0){
         this->x *= -1;
         this->vx *= -1;
+        this->vx *= RESTITUTION;
     } else if (this->x >= 100){
         this->x = 200 - this->x;
         this->vx *= -1;
+        this->vx *= RESTITUTION;
     }
     this->calcMinMax();
 }

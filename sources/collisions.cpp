@@ -91,8 +91,23 @@ bool collisions::testCollision(particle *A, particle *B) {
 
 //    std::printf("dqdist: %f       sqDiff: %f\n", sqDist, sqDiffCenter);
 
-    if(sqDist <= sqDiffCenter)
+    if(sqDist <= sqDiffCenter) {
+        if (sqDist < sqDiffCenter) {
+            //separating the particles
+            //Find center separation vector
+            double sepX = B->getx() - A->getx();
+            double sepY = B->gety() - A->gety();
+            double sepMagSq = sepX * sepX + sepY * sepY;
+            sepX /= sqrt(sepMagSq);
+            sepY /= sqrt(sepMagSq);
+            sepX *= (A->getShapeCharacteristicValue() + B->getShapeCharacteristicValue());
+            sepY *= (A->getShapeCharacteristicValue() + B->getShapeCharacteristicValue());
+
+            B->setx(A->getx() + sepX);
+            B->sety(A->gety() + sepY);
+        }
         return true;
+    }
     else
         return false;
 }
@@ -105,10 +120,11 @@ void collisions::checkForCollision() {
 
     for(int i = 0; i < List.size() - 1; i++){
         for(int j = i + 1; j < List.size(); j++) {
-            ++totalCalculations;
+//            ++totalCalculations;
             if (testCollision(List[i], List[j])) {
                 circleParticle::resolveCollision(dynamic_cast<circleParticle *>(List[i]),
                                                  dynamic_cast<circleParticle *>(List[j]));
+                ++totalCalculations;
             }
             if(List[j]->getMin()[axis] >= List[i]->getMax()[axis])
                 break;

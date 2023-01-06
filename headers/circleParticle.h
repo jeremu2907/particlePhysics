@@ -14,6 +14,7 @@ class circleParticle : public particle {
     public:
         circleParticle(double x, double y, double vx, double vy);
         circleParticle(double x, double y, double vx, double vy, double mass);
+        circleParticle(double x, double y, double vx, double vy, double mass, float restitution);
         ~circleParticle(){};
 
         double getShapeCharacteristicValue() override;

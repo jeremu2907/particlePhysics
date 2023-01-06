@@ -7,9 +7,6 @@
 #include <iostream>
 
 class particle{
-    const double G_VAL = - 9.807;
-    const double DT = (double)1 / 60;
-
     protected:
         double x, y, mass;             //Center (x,y), mass
         double vx, vy;    //current and prev Velocity
@@ -23,10 +20,15 @@ class particle{
 
         void calcVy();
     public:
+        static const double G_VAL;
+        static const double DT;
+        static float RESTITUTION;
+
         particle();
         particle(double x, double y);
         particle(double x, double y, double vx, double vy);
         particle(double x, double y, double vx, double vy, double rotation);
+        particle(double x, double y, double vx, double vy, double rotation, float restitution);
 
         ~particle(){};
 
