@@ -10,6 +10,7 @@
 #include "headers/circleParticle.h"
 #include "headers/collisions.h"
 #include "headers/functional.h"
+#include "headers/squareParticle.h"
 
 using std::cout;
 using std::endl;
@@ -31,9 +32,9 @@ int main(int argc, char *argv[]){
 //    std::thread renderScreen(nextStateRender,"next_state.txt");
 
 //    getNextState("next_state.txt",1);
-//    testContinuousState(120);
+    testContinuousState(120);
 //    renderScreen.join();
-    testScreen();
+//    testScreen();
 }
 
 //void nextStateRender(std::string fileName){
@@ -149,11 +150,14 @@ void testContinuousState(int seconds){
 //    }
 
 
-    for(int j = 0; j <= 100; j += 5) {
-        for(int k = 0; k <= 100; k+= 5){
+    for(int j = 0; j <= 100; j += 40) {
+        for(int k = 0; k <= 100; k+= 40){
                 list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), mDistrib(gen),RESTITUTION));
         }
     }
+
+    squareParticle * square = new squareParticle(50,50,0,-10,0,-particle::PI,100,1);
+
 
 //    list.push_back(new circleParticle(50,50,10,10,50,1));
     collisions particleList(list);
@@ -194,13 +198,19 @@ void testContinuousState(int seconds){
             particleList.checkForCollision();
 
             for(auto j : particleList.getList()){
-                j->calcSy();
+                j->calcSyGravity();
                 j->calcSx();
             }
+
+            square->calcSyGravity();
+            square->calcSx();
+            square->calcTheta();
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+            functional::DrawSquare(renderer, square->getx()/ 100 * 800, 800 - (square->gety() / 100 * 800),square->getShapeCharacteristicValue() * 8, square->getTheta());
 
             for(auto j : particleList.getList()){
                 functional::DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), j->getShapeCharacteristicValue() * 8);

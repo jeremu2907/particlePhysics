@@ -4,10 +4,7 @@
 
 #include "../headers/squareParticle.h"
 
-squareParticle::squareParticle(double x, double y, double rotation, double vx, double vy, double va, double mass, double restitution) : particle(x,y,vx,vy,mass,restitution){
-    this->va = va;
-    this->setrotation(rotation);
-
+squareParticle::squareParticle(double x, double y, double rotation, double vx, double vy, double va, double mass, double restitution) : particle(x,y,rotation,vx,vy,va,mass,restitution){
     if(mass <= 50)
         this->apothem += mass/20;
     else
@@ -15,8 +12,8 @@ squareParticle::squareParticle(double x, double y, double rotation, double vx, d
 }
 
 void squareParticle::calcMinMax() {
-    double deltaX = this->apothem * std::sin(this->getrotation());
-    double deltaY = this->apothem * std::cos(this->getrotation());
+    double deltaX = this->apothem * std::sin(this->getTheta());
+    double deltaY = this->apothem * std::cos(this->getTheta());
 
     this->min[0] = this->x - deltaX;
     this->min[1] = this->y - deltaY;
@@ -28,3 +25,7 @@ void squareParticle::calcMinMax() {
 double squareParticle::getShapeCharacteristicValue() {
     return apothem;
 }
+
+//particle::SHAPE getShape() {
+//    return particle::SHAPE::SQUARE;
+//}

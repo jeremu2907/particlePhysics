@@ -10,7 +10,8 @@ class particle{
     protected:
         double x, y, mass;             //Center (x,y), mass
         double vx, vy;    //current and prev Velocity
-        double rotation;            //angle of rotation
+        double theta;            //angle of rotation
+        double va;
 
         //Calculate min max points of hit box, to be overridden because difference of shapes
         virtual void calcMinMax(){};
@@ -21,12 +22,14 @@ class particle{
         void calcVy();
     public:
         enum SHAPE {
+            NONE,
             CIRCLE,
             SQUARE,
-            TRIANGLE,
+            TRIANGLE
         };
         static const double G_VAL;
         static const double DT;
+        static const double PI;
         static float RESTITUTION;
 
         particle();
@@ -34,6 +37,7 @@ class particle{
         particle(double x, double y, double vx, double vy);
         particle(double x, double y, double vx, double vy, double rotation);
         particle(double x, double y, double vx, double vy, double rotation, float restitution);
+        particle(double x, double y, double rotation, double vx, double vy, double va, double mass,float restitution);
 
         ~particle(){};
 
@@ -41,13 +45,16 @@ class particle{
         double gety();
         double getvx();
         double getvy();
-        double getrotation();
+        double getTheta();
+        double getva();
         double getMass();
         virtual double getShapeCharacteristicValue(){
             return 0;
         };   //Depending on what shape it is, it will return its characteristic value (radius, sideLength, etc)
 
-        virtual SHAPE getShape();
+        virtual SHAPE getShape(){
+            return NONE;
+        };
 
         double* getMin();
         double* getMax();
@@ -56,12 +63,14 @@ class particle{
         void sety(double e);
         void setvx(double e);
         void setvy(double e);
-        void setrotation(double e);
+        void setTheta(double e);
+        void setva(double e);
 
         //Must be inherited because all objects subject to gravity
         void calcSy();
         void calcSyGravity();
         void calcSx();
+        void calcTheta();
 
 };
 

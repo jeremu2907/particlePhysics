@@ -32,6 +32,10 @@ double circleParticle::getShapeCharacteristicValue(){
     return this->radius;
 }
 
+//particle::SHAPE getShape(){
+//    return particle::CIRCLE;
+//}
+
 void circleParticle::resolveCollisionDirect(circleParticle *A, circleParticle *B) {
     double M = B->getMass() * B->getMass() / A->getMass();
     double a = M + B->getMass();

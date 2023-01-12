@@ -10,7 +10,6 @@
 class squareParticle : public particle {
     private:
         double apothem = 1;
-        double va;
 
         void calcMinMax() override;
 
@@ -18,7 +17,7 @@ class squareParticle : public particle {
         squareParticle(double x, double y, double rotation, double vx, double vy, double va, double mass, double restitution);
 
         double getShapeCharacteristicValue() override;
-        double getva();
+//        particle::SHAPE getShape() override;
 };
 
 #endif //PARTICLEPHYSICS_SQUAREPARTICLE_H

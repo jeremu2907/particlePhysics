@@ -18,6 +18,7 @@ class circleParticle : public particle {
         ~circleParticle(){};
 
         double getShapeCharacteristicValue() override;
+//        particle::SHAPE getShape() override;
         void static resolveCollision(circleParticle *A, circleParticle *B);
 
         //Used to test head-on direct collision only
