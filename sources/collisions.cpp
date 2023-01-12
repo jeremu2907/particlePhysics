@@ -21,7 +21,6 @@ collisions::collisions(std::vector<particle*> e){
 void collisions::addParticle(particle *ptrParticle) {
     particleListX.push_back(ptrParticle);
     particleListY.push_back(ptrParticle);
-    collisions::updateParticle();
 }
 
 void collisions::updateParticle() {

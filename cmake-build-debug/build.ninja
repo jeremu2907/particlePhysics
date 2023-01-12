@@ -74,6 +74,13 @@ build CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o: CXX_COMPILER__par
   OBJECT_DIR = CMakeFiles/particlePhysics.dir
   OBJECT_FILE_DIR = CMakeFiles/particlePhysics.dir/sources
 
+build CMakeFiles/particlePhysics.dir/sources/squareParticle.cpp.o: CXX_COMPILER__particlePhysics_Debug /Users/jeremynguyen/Documents/GitHub/particlePhysics/sources/squareParticle.cpp || cmake_object_order_depends_target_particlePhysics
+  DEP_FILE = CMakeFiles/particlePhysics.dir/sources/squareParticle.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -fcolor-diagnostics -F /Library/Frameworks/ -F /Library/Frameworks/ -std=gnu++14
+  INCLUDES = -isystem /Library/Frameworks/SDL2.framework/Headers -iframework /Library/Frameworks -isystem /Library/Frameworks/SDL2_image.framework/Headers
+  OBJECT_DIR = CMakeFiles/particlePhysics.dir
+  OBJECT_FILE_DIR = CMakeFiles/particlePhysics.dir/sources
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target particlePhysics
@@ -82,7 +89,7 @@ build CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o: CXX_COMPILER__par
 #############################################
 # Link the executable particlePhysics
 
-build particlePhysics: CXX_EXECUTABLE_LINKER__particlePhysics_Debug CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o CMakeFiles/particlePhysics.dir/main.cpp.o CMakeFiles/particlePhysics.dir/sources/particle.cpp.o CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o
+build particlePhysics: CXX_EXECUTABLE_LINKER__particlePhysics_Debug CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o CMakeFiles/particlePhysics.dir/main.cpp.o CMakeFiles/particlePhysics.dir/sources/particle.cpp.o CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o CMakeFiles/particlePhysics.dir/sources/squareParticle.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6
   LINK_FLAGS = -F /Library/Frameworks/ -framework SDL2 -F /Library/Frameworks/ -framework SDL2_image
   OBJECT_DIR = CMakeFiles/particlePhysics.dir

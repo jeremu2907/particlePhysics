@@ -5,12 +5,18 @@ circleParticle::circleParticle(double x, double y, double vx, double vy) : parti
 }
 
 circleParticle::circleParticle(double x, double y, double vx, double vy, double mass) : particle(x, y, vx, vy, mass) {
-    this->radius += mass/10;
+    if(mass <= 50)
+        this->radius += mass/10;
+    else
+        this->radius = 5;
     circleParticle::calcMinMax();
 }
 
 circleParticle::circleParticle(double x, double y, double vx, double vy, double mass,float restitution) : particle(x, y, vx, vy, mass,restitution) {
-    this->radius += mass/10;
+    if(mass <= 50)
+        this->radius += mass/20;
+    else
+        this->radius = 2.5;
     circleParticle::calcMinMax();
 }
 

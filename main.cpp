@@ -1,29 +1,115 @@
 #include <iostream>
 #include <fstream>
 #include "SDL2/SDL.h"
+#include <mutex>
 #include <thread>
 #include <random>
+#include <condition_variable>
 
 #include "headers/timer.h"
 #include "headers/circleParticle.h"
 #include "headers/collisions.h"
-#include "headers/functionals.h"
+#include "headers/functional.h"
 
 using std::cout;
 using std::endl;
+using std::cin;
 
 //Unit Tests
 void testScreen();
 void testContinuousState(int);
-void getNextState();
+int getNextState(std::string, float);
+void waitForInput();
+void nextStateRender(std::string);
+
+std::mutex m;
+std::condition_variable cv;
 
 int main(int argc, char *argv[]){
     cout << "Real Time Particle Collision Engine" << endl << endl;
-    testContinuousState(5);
+
+//    std::thread renderScreen(nextStateRender,"next_state.txt");
+
+//    getNextState("next_state.txt",1);
+//    testContinuousState(120);
+//    renderScreen.join();
+    testScreen();
 }
 
-void getNextState(){
+//void nextStateRender(std::string fileName){
+//    // Wait until main() sends data
+//    std::unique_lock<std::mutex> lock(m);
+//    cv.wait(lock, []{return true;});
+//
+//    SDL_Init(SDL_INIT_VIDEO);
+//    SDL_Window * window = SDL_CreateWindow("State Render", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+//    SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
+//    bool running = true;
+//
+//    while(running)
+//    {
+//        SDL_Event e;
+//        while (SDL_PollEvent(&e))
+//        {
+//            if(e.type == SDL_QUIT)
+//            {
+//                running = false;
+//                break;
+//            }
+//            // Handle events
+//        }
+//        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+//        SDL_RenderClear(renderer);
+//
+//        SDL_SetRenderDrawColor(renderer, 255,255,255,255);
+//        functional::DrawCircle(renderer, 400,300, 1);
+//        SDL_RenderPresent(renderer);
+//        // "Frame" logic
+//    }
+//}
 
+int renderThread(std::string fileName){
+    cout << "hi";
+    return 0;
+}
+
+int getNextState(std::string stateFile, float RESTITUTION){
+    std::ifstream inFile(stateFile);
+    collisions particleList;
+
+    double x = -1;
+    double y= -1;
+    double vx= -1;
+    double vy= -1;
+    double mass = 0;
+    std::string s;
+
+    while(inFile >> s){
+        functional::parseStringToData(s, &x, &y, &vx, &vy, &mass);
+        particleList.addParticle(new circleParticle(x,y,vx,vy,mass,RESTITUTION));
+    }
+
+    if(particleList.getList().size() == 0){
+        cout << "Empty Input File";
+        return 1;
+    }
+
+    int n = 10;
+    inFile.close();
+    while(true) {
+        std::ofstream outFile(stateFile);
+        particleList.updateParticle();
+        particleList.checkForCollision();
+        for (auto i: particleList.getList()) {
+            i->calcSx();
+            i->calcSy();
+            outFile << i->getx() << ',' << i->gety() << ',' << i->getvx() << ',' << i->getvy() << ',' << i->getMass()
+                    << '\n';
+        }
+        outFile.close();
+        cin.get();
+    }
+    return 0;
 }
 
 void testContinuousState(int seconds){
@@ -32,25 +118,44 @@ void testContinuousState(int seconds){
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     bool running = true;
     std::vector<particle *> list;
-    const float RESTITUTION = 1;
+    const float RESTITUTION = 0.95;
 
     //Generation list of objects
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> xyDistrib(0, 100);
-    std::uniform_int_distribution<> vXDistrib(-30, 30);
-    std::uniform_int_distribution<> vYDistrib(-30, 30);
+    std::uniform_int_distribution<> vXDistrib(-5, 5);
+    std::uniform_int_distribution<> vYDistrib(-5, 5);
     std::uniform_int_distribution<> mDistrib(1,10);
-    for(int j = 0; j <= 100; j += 10) {
-        for(int k = 0; k <= 100; k+= 10)
-            list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), mDistrib(gen),RESTITUTION));
+
+    //Thermo Dynamics
+//    for(int j = 0; j <= 100; j += 5) {
+//        for(int k = 0; k <= 100; k+= 5){
+//            if (k > 50)
+//                list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), mDistrib(gen),RESTITUTION));
+//            else
+//                list.push_back(new circleParticle(k, j, 0, 0, mDistrib(gen),RESTITUTION));
+//        }
+//    }
+
+    //Sound wave
+//    for(int j = 0; j <= 100; j += 5) {
+//        for(int k = 0; k <= 100; k+= 5){
+//            if (k > 49 && k < 56)
+//                list.push_back(new circleParticle(k, j, -50, 0, 2,RESTITUTION));
+//            else
+//                list.push_back(new circleParticle(k, j, 0, 0, 2,RESTITUTION));
+//        }
+//    }
+
+
+    for(int j = 0; j <= 100; j += 5) {
+        for(int k = 0; k <= 100; k+= 5){
+                list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), mDistrib(gen),RESTITUTION));
+        }
     }
-//    list.push_back(new circleParticle(70,20, -10, 0,50,RESTITUTION));
-//    list.push_back(new circleParticle(50,0,0,0,50));
-//    list.push_back(new circleParticle(50,80, 0, 0,50));
-//    list.push_back(new circleParticle(50,40,0,0,20));
-//    list.push_back(new circleParticle(20,20, 0, 0,1,RESTITUTION));
-//    list.push_back(new circleParticle(50,1, 0, 0,10));
+
+//    list.push_back(new circleParticle(50,50,10,10,50,1));
     collisions particleList(list);
 
     timer t_calc;       //Calculate particle state @ 60Hz
@@ -98,7 +203,7 @@ void testContinuousState(int seconds){
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
             for(auto j : particleList.getList()){
-                functionals::DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), j->getShapeCharacteristicValue() * 8);
+                functional::DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), j->getShapeCharacteristicValue() * 8);
             }
             SDL_RenderPresent(renderer);
 
@@ -113,7 +218,7 @@ void testContinuousState(int seconds){
 
     std::ofstream outfile("final_state.txt");
     for(auto j : particleList.getList()){
-        outfile << j->getvx() << ',' << j->getvy() << '\n';
+        outfile << j->getx() << ',' << j->gety() << ',' << j->getvx() << ',' << j->getvy() << ',' << j->getMass() << '\n';
     }
     outfile.close();
 
@@ -126,9 +231,6 @@ void testScreen(){
     SDL_Window * window = SDL_CreateWindow("Particle Render", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     bool running = true;
-
-    int x = 0;
-    int y = 0;
 
     while(running)
     {
@@ -146,8 +248,7 @@ void testScreen(){
         SDL_RenderClear(renderer);
 
         SDL_SetRenderDrawColor(renderer, 255,255,255,255);
-        SDL_RenderDrawLine(renderer, x++ % 800,y++ % 600, (x++ + 100) % 800,(y++ + 100) % 600);
-        functionals::DrawCircle(renderer, 400,300, 1);
+        functional::DrawSquare(renderer,250,250, 10, 0.12);
         SDL_RenderPresent(renderer);
         // "Frame" logic
     }

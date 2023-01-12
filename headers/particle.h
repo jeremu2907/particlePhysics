@@ -20,6 +20,11 @@ class particle{
 
         void calcVy();
     public:
+        enum SHAPE {
+            CIRCLE,
+            SQUARE,
+            TRIANGLE,
+        };
         static const double G_VAL;
         static const double DT;
         static float RESTITUTION;
@@ -41,6 +46,8 @@ class particle{
         virtual double getShapeCharacteristicValue(){
             return 0;
         };   //Depending on what shape it is, it will return its characteristic value (radius, sideLength, etc)
+
+        virtual SHAPE getShape();
 
         double* getMin();
         double* getMax();
