@@ -3,6 +3,7 @@
 //
 
 #include "SDL2/SDL.h"
+#include <string>
 
 #ifndef PARTICLEPHYSICS_FUNCTIONALS_H
 #define PARTICLEPHYSICS_FUNCTIONALS_H
@@ -44,6 +45,14 @@ namespace functionals{
                 error += (tx - diameter);
             }
         }
+    }
+    void parseStringToData(std::string s, double *x, double *y, double *vx, double *vy){
+        int indexL = 0;
+        int indexR = s.find(',', indexL);
+        x = stod(s.substr(indexL,indexR));
+        indexL = indexR++;
+        indexR = s.find(',', indexL);
+        ()
     }
 }
 
