@@ -11,22 +11,28 @@
 #include <algorithm>
 #include "particle.h"
 #include "circleParticle.h"
+#include "squareParticle.h"
 
 class collisions{
     private:
         std::vector<particle*> particleListX;
         std::vector<particle*> particleListY;
-        float coefOfRestitution = 1;    //[0,1] perfect inelastic - perfect elastic
 
         double varianceX;
         double varianceY;
 
         void insertionSort(std::vector<particle*> &, int axis);
-        bool testCollision(particle* A, particle *B);
+        bool testCollisionCircleCircle(particle* A, particle* B);
+        bool testCollisionSquareCircle(particle& A, particle& B);
 
         int getParticleList(){
             return (varianceX >= varianceY)? 0 : 1;
         }
+
+        static double * intermediateV(double v1, double v2, double m1, double m2); //Helper function
+        static void resolveCollisionCircleCircle(circleParticle *A, circleParticle *B);
+        static void resolveCollisionSquareCircle(particle *A, particle *B);
+        static void orderSquareCircle(particle** A, particle** B);
 
     public:
         double totalCalculations = 0;

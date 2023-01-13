@@ -17,7 +17,8 @@ class squareParticle : public particle {
         squareParticle(double x, double y, double rotation, double vx, double vy, double va, double mass, double restitution);
 
         double getShapeCharacteristicValue() override;
-//        particle::SHAPE getShape() override;
+
+        particle::SHAPE getShape() override;
 };
 
 #endif //PARTICLEPHYSICS_SQUAREPARTICLE_H

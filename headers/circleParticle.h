@@ -10,7 +10,6 @@ class circleParticle : public particle {
         double radius = 1;
 
         void calcMinMax() override;
-        static double* intermediateV(double, double, double, double); //Helper function for circleParticle::resolveCollision
     public:
         circleParticle(double x, double y, double vx, double vy);
         circleParticle(double x, double y, double vx, double vy, double mass);
@@ -18,8 +17,7 @@ class circleParticle : public particle {
         ~circleParticle(){};
 
         double getShapeCharacteristicValue() override;
-//        particle::SHAPE getShape() override;
-        void static resolveCollision(circleParticle *A, circleParticle *B);
+        particle::SHAPE getShape() override;
 
         //Used to test head-on direct collision only
         void static resolveCollisionDirect(circleParticle *A, circleParticle *B);

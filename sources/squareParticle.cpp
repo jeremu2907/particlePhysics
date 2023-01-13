@@ -26,6 +26,6 @@ double squareParticle::getShapeCharacteristicValue() {
     return apothem;
 }
 
-//particle::SHAPE getShape() {
-//    return particle::SHAPE::SQUARE;
-//}
+particle::SHAPE squareParticle::getShape() {
+    return particle::SQUARE;
+}

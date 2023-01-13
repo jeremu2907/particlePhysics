@@ -32,46 +32,9 @@ int main(int argc, char *argv[]){
 //    std::thread renderScreen(nextStateRender,"next_state.txt");
 
 //    getNextState("next_state.txt",1);
-    testContinuousState(120);
+    testContinuousState(1200);
 //    renderScreen.join();
 //    testScreen();
-}
-
-//void nextStateRender(std::string fileName){
-//    // Wait until main() sends data
-//    std::unique_lock<std::mutex> lock(m);
-//    cv.wait(lock, []{return true;});
-//
-//    SDL_Init(SDL_INIT_VIDEO);
-//    SDL_Window * window = SDL_CreateWindow("State Render", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-//    SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
-//    bool running = true;
-//
-//    while(running)
-//    {
-//        SDL_Event e;
-//        while (SDL_PollEvent(&e))
-//        {
-//            if(e.type == SDL_QUIT)
-//            {
-//                running = false;
-//                break;
-//            }
-//            // Handle events
-//        }
-//        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-//        SDL_RenderClear(renderer);
-//
-//        SDL_SetRenderDrawColor(renderer, 255,255,255,255);
-//        functional::DrawCircle(renderer, 400,300, 1);
-//        SDL_RenderPresent(renderer);
-//        // "Frame" logic
-//    }
-//}
-
-int renderThread(std::string fileName){
-    cout << "hi";
-    return 0;
 }
 
 int getNextState(std::string stateFile, float RESTITUTION){
@@ -119,15 +82,16 @@ void testContinuousState(int seconds){
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     bool running = true;
     std::vector<particle *> list;
-    const float RESTITUTION = 0.95;
+    const float RESTITUTION = 0.8;
 
     //Generation list of objects
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> xyDistrib(0, 100);
-    std::uniform_int_distribution<> vXDistrib(-5, 5);
-    std::uniform_int_distribution<> vYDistrib(-5, 5);
+    std::uniform_int_distribution<> vXDistrib(-10, 10);
+    std::uniform_int_distribution<> vYDistrib(-10, 10);
     std::uniform_int_distribution<> mDistrib(1,10);
+    std::uniform_int_distribution<> vaDistrib(-100, 100);
 
     //Thermo Dynamics
 //    for(int j = 0; j <= 100; j += 5) {
@@ -149,14 +113,18 @@ void testContinuousState(int seconds){
 //        }
 //    }
 
-
-    for(int j = 0; j <= 100; j += 40) {
-        for(int k = 0; k <= 100; k+= 40){
+//
+    for(int j = 0; j <= 100; j += 20) {
+        for(int k = 0; k <= 100; k+= 20){
                 list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), mDistrib(gen),RESTITUTION));
         }
     }
 
-    squareParticle * square = new squareParticle(50,50,0,-10,0,-particle::PI,100,1);
+    squareParticle * square = new squareParticle(75,75,0,vXDistrib(gen),vYDistrib(gen),vaDistrib(gen) / 100.0 * particle::PI,mDistrib(gen),RESTITUTION);
+    list.push_back(square);
+
+//    list.push_back(new squareParticle(10,50,particle::PI/3,30,0,10,100,1));
+//    list.push_back(new circleParticle(90, 50, -30, 0, 100,RESTITUTION));
 
 
 //    list.push_back(new circleParticle(50,50,10,10,50,1));
@@ -198,22 +166,25 @@ void testContinuousState(int seconds){
             particleList.checkForCollision();
 
             for(auto j : particleList.getList()){
-                j->calcSyGravity();
+                j->calcSy();
                 j->calcSx();
+                if(j->getShape() == particle::SQUARE)
+                    j->calcTheta();
             }
 
-            square->calcSyGravity();
-            square->calcSx();
-            square->calcTheta();
+//            square->calcSy();
+//            square->calcSx();
+//            square->calcTheta();
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-            functional::DrawSquare(renderer, square->getx()/ 100 * 800, 800 - (square->gety() / 100 * 800),square->getShapeCharacteristicValue() * 8, square->getTheta());
-
             for(auto j : particleList.getList()){
-                functional::DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), j->getShapeCharacteristicValue() * 8);
+                if(j->getShape() == particle::CIRCLE)
+                    functional::DrawCircle(renderer,j->getx() / 100 * 800, 800 - (j->gety() / 100 * 800), j->getShapeCharacteristicValue() * 8);
+                else if(j->getShape() == particle::SQUARE)
+                    functional::DrawSquare(renderer, j->getx()/ 100 * 800, 800 - (j->gety() / 100 * 800),j->getShapeCharacteristicValue() * 8, j->getTheta());
             }
             SDL_RenderPresent(renderer);
 
