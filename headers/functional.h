@@ -48,7 +48,7 @@ namespace functional{
     }
     void DrawSquare(SDL_Renderer * renderer, int32_t centerX, int32_t centerY, int32_t apothem, float rotation){
         //Simplified apothem vector rotated by rotation matrix
-        double X_1 = -1 * apothem * std::sin(rotation);
+        double X_1 = apothem * std::sin(rotation);
         double Y_1 = apothem * std::cos(rotation);
 
         double X_2 = -1 * Y_1;

@@ -93,16 +93,6 @@ double* collisions::intermediateV(double v1, double v2, double m1, double m2) {
 }
 
 void collisions::resolveCollisionCircleCircle(circleParticle *A, circleParticle *B) {
-//    //separating the particles
-//    //Find center separation vector
-//    double sepX = B->getx() - A->getx();
-//    double sepY = B->gety() - A->gety();
-//    double sepMagSq = sepX * sepX + sepY * sepY;
-//    sepX /= sqrt(sepMagSq);
-//    sepY /= sqrt(sepMagSq);
-//    sepX *= (A->getShapeCharacteristicValue() + B->getShapeCharacteristicValue());
-//    sepY *= (A->getShapeCharacteristicValue() + B->getShapeCharacteristicValue());
-
     //Find Tangent vector
     double tanX = - (B->gety() - A->gety());
     double tanY = B->getx() - A->getx();
@@ -138,6 +128,91 @@ void collisions::resolveCollisionCircleCircle(circleParticle *A, circleParticle 
 
     delete X;
     delete Y;
+}
+
+void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
+     collisions::orderSquareCircle(&A, &B);
+
+    //Directional unit vectors for rotation indication
+    double X_1 = -1 * std::sin(A->getTheta());
+    double Y_1 = std::cos(A->getTheta());
+    double X_2 = -1 * Y_1;
+    double Y_2 = X_1;
+    double vCenterX = B->getx() - A->getx();
+    double vCenterY = B->gety() - A->gety();
+
+    //Switches value of 1 to 2 if center vector dot 1 is less than center dot 2
+    if(std::abs(vCenterX * X_1 + vCenterY * Y_1) < abs(vCenterX * X_2 + vCenterY * Y_2)){
+        double temp;
+        temp = X_1;
+        X_1 = X_2;
+        X_2 = temp;
+        temp = Y_1;
+        Y_1 = Y_2;
+        Y_2 = temp;
+    }
+
+    //X_1 will be the vector for perp / contact line norm
+    //X_2 will be the vector for parallel / contact line
+
+    //Contact point vector
+    double centerDotContactLine = vCenterX * X_2 + vCenterY * Y_2;
+    double centerDotContactLineNormX = vCenterX - centerDotContactLine * X_2;
+    double centerDotContactLineNormY = vCenterY - centerDotContactLine * Y_2;
+    double centerDotContactLineNormMag = sqrt(centerDotContactLineNormX * centerDotContactLineNormX + centerDotContactLineNormY + centerDotContactLineNormY);
+    centerDotContactLineNormX = (centerDotContactLineNormX / centerDotContactLineNormMag) * A->getShapeCharacteristicValue();
+    centerDotContactLineNormY = (centerDotContactLineNormY / centerDotContactLineNormMag) * A->getShapeCharacteristicValue();
+    double VcontactPointX = centerDotContactLine * X_2 + centerDotContactLineNormX;
+    double VcontactPointY = centerDotContactLine * Y_2 + centerDotContactLineNormY;
+    double MagContactSq = VcontactPointX * VcontactPointX + VcontactPointY * VcontactPointY;
+
+    //Tangent velocity of spinning square
+    double tanX = -1 * A->getva() * VcontactPointY;
+    double tanY = A->getva() * VcontactPointX;
+    double tanDotPerp = tanX * X_1 + tanY * Y_1;
+    //assign as rotational contact vector
+    double tanVX = X_1 * tanDotPerp;
+    double tanVY = Y_1 * tanDotPerp;
+
+    //Caculating circular object v's
+    double vcDot = B->getvx() * X_1 + B->getvy() * Y_1;
+    double vcPerpX = vcDot * X_1;
+    double vcPerpY = vcDot * Y_1;
+    double vcParaX = B->getvx() - vcPerpX;
+    double vcParaY = B->getvy() - vcPerpY;
+
+    //Calculating square tranlational v's
+    double vsDot = A->getvx() * X_1 + A->getvy() * Y_1;
+    double vsPerpX = vsDot * X_1;
+    double vsPerpY = vsDot * Y_1;
+    double vsParaX = A->getvx() - vsPerpX;
+    double vsParaY = A->getvy() - vsPerpY;
+
+    double* X = collisions::intermediateV(vsPerpX + tanVX, vcPerpX, A->getMass(), B->getMass());
+    double* Y = collisions::intermediateV(vsPerpY + tanVY, vcPerpY, A->getMass(), B->getMass());
+
+    //Assign tanV_X_Y to its norm
+    double deltatanVX = X[0] - tanVX;
+    double deltatanVY = Y[0] - tanVY;
+
+//    if(deltatanVX * tanVX + deltatanVY * tanVY > 0.0)
+//        A->setva(A->getva() - sqrt((deltatanVX*deltatanVX + deltatanVY*deltatanVY) / MagContactSq));
+//    else if (deltatanVX * tanVX + deltatanVY * tanVY < 0.0)
+//        A->setva(A->getva() + sqrt((deltatanVX*deltatanVX + deltatanVY*deltatanVY) / MagContactSq));
+
+
+
+    double resultantV_0DotContactV = X[0] * VcontactPointX + Y[0] * VcontactPointY;
+    X[0] = (resultantV_0DotContactV / MagContactSq) * VcontactPointX;
+    Y[0] = (resultantV_0DotContactV / MagContactSq) * VcontactPointY;
+    A->setvx(vsParaX + X[0]);
+//    if(X[0] > 0.000000001) A->setvx(A->getvx() * particle::RESTITUTION);
+    A->setvy(vsParaY + Y[0]);
+//    if(Y[0] > 0.000000001) A->setvy(A->getvy() * particle::RESTITUTION);
+    B->setvx(vcParaX + X[1]);
+//    if(X[1] > 0.000000001) B->setvx(B->getvx() * particle::RESTITUTION);
+    B->setvy(vcParaY + Y[1]);
+//    if(Y[1] > 0.000000001) B->setvy(B->getvy() * particle::RESTITUTION);
 }
 
 bool collisions::testCollisionCircleCircle(particle *A, particle *B) {
@@ -178,7 +253,6 @@ void collisions::orderSquareCircle(particle **A, particle **B) {
 
 bool collisions::testCollisionSquareCircle(particle& p1, particle& p2) {
     //Make A be the square particle and B circular for standardization
-//    std::cout << p1 << std::endl << p2;
     particle *A = &p1;
     particle *B = &p2;
 //    if(p1.getShape() == particle::SQUARE) {
@@ -191,7 +265,7 @@ bool collisions::testCollisionSquareCircle(particle& p1, particle& p2) {
     collisions::orderSquareCircle(&A,&B);
 
     //Directional vectors for rotation indication
-    double X_1 = -1 * std::sin(A->getTheta());
+    double X_1 = -std::sin(A->getTheta());
     double Y_1 = std::cos(A->getTheta());
     double X_2 = -1 * Y_1;
     double Y_2 = X_1;
@@ -232,8 +306,7 @@ void collisions::checkForCollision() {
             else if((List[i]->getShape() == particle::CIRCLE && List[j]->getShape() == particle::SQUARE) ||
                     (List[i]->getShape() == particle::SQUARE && List[j]->getShape() == particle::CIRCLE) ){
                 if (testCollisionSquareCircle(*List[i], *List[j])) {
-                    std::cout << "Collided"<< std::endl;
-
+                    collisions::resolveCollisionSquareCircle(List[i], List[j]);
                 }
             }
 
