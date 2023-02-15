@@ -88,7 +88,7 @@ void testContinuousState(int seconds){
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> xyDistrib(1, 99);
     std::uniform_int_distribution<> vXDistrib(-20, 20);
-    std::uniform_int_distribution<> vYDistrib(-20, 20);
+    std::uniform_int_distribution<> vYDistrib(0, 10);
     std::uniform_int_distribution<> mDistrib(1,10);
     std::uniform_int_distribution<> vaDistrib(-100, 100);
 
@@ -96,7 +96,7 @@ void testContinuousState(int seconds){
 //    const float RESTITUTION = 0.97;
 //    for(int j = 0; j <= 100; j += 5) {
 //        for(int k = 0; k <= 100; k+= 5){
-//            if (k > 50)
+//            if (k < 50)
 //                list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), mDistrib(gen),RESTITUTION));
 //            else
 //                list.push_back(new circleParticle(k, j, 0, 0, mDistrib(gen),RESTITUTION));
@@ -115,18 +115,22 @@ void testContinuousState(int seconds){
 //    }
 
     const float RESTITUTION = 1;
-    for(int j = 0; j <= 100; j +=30) {
-        for(int k = 0; k <= 100; k+= 30){
-                list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), mDistrib(gen),RESTITUTION));
+    for(int j = 50; j <= 100; j += 20) {
+        for(int k = 0; k <= 100; k+= 20){
+                list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
         }
     }
 
-    squareParticle * square = new squareParticle(75,75,0,vXDistrib(gen),vYDistrib(gen),particle::PI,mDistrib(gen),RESTITUTION);
-    list.push_back(square);
+//    squareParticle * square = new squareParticle(75,75,0,vXDistrib(gen),vYDistrib(gen),particle::PI,mDistrib(gen),RESTITUTION);
+//    list.push_back(square);
 
-//    list.push_back(new squareParticle(45,50,0,10,0,vaDistrib(gen) * 0 / 100.0 * particle::PI,100,1));
-//    list.push_back(new circleParticle(70, 50, -10, 0, 100,RESTITUTION));
-//    list.push_back(new squareParticle(50,50,0,0,0,1,100,1));
+//    list.push_back(new squareParticle(47,50,0,10,0,0*vaDistrib(gen) / 100.0 * particle::PI,100,1));
+//    list.push_back(new circleParticle(40, 47, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
+//    list.push_back(new circleParticle(20, 40, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
+//    list.push_back(new circleParticle(10, 60, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
+//    list.push_back(new circleParticle(30, 30, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
+//    list.push_back(new circleParticle(60, 70, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
+//    list.push_back(new circleParticle(80, 20, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
 
 
 //    list.push_back(new circleParticle(50,50,10,10,50,1));

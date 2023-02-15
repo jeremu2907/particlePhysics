@@ -134,7 +134,7 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
      collisions::orderSquareCircle(&A, &B);
 
     //Directional unit vectors for rotation indication
-    double X_1 = -1 * std::sin(A->getTheta());
+    double X_1 = std::sin(A->getTheta());
     double Y_1 = std::cos(A->getTheta());
     double X_2 = -1 * Y_1;
     double Y_2 = X_1;
@@ -155,24 +155,31 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     //X_1 will be the vector for perp / contact line norm
     //X_2 will be the vector for parallel / contact line
 
-    //Contact point vector
-    double centerDotContactLine = vCenterX * X_2 + vCenterY * Y_2;
-    double centerDotContactLineNormX = vCenterX - centerDotContactLine * X_2;
-    double centerDotContactLineNormY = vCenterY - centerDotContactLine * Y_2;
-    double centerDotContactLineNormMag = sqrt(centerDotContactLineNormX * centerDotContactLineNormX + centerDotContactLineNormY + centerDotContactLineNormY);
-    centerDotContactLineNormX = (centerDotContactLineNormX / centerDotContactLineNormMag) * A->getShapeCharacteristicValue();
-    centerDotContactLineNormY = (centerDotContactLineNormY / centerDotContactLineNormMag) * A->getShapeCharacteristicValue();
-    double VcontactPointX = centerDotContactLine * X_2 + centerDotContactLineNormX;
-    double VcontactPointY = centerDotContactLine * Y_2 + centerDotContactLineNormY;
-    double MagContactSq = VcontactPointX * VcontactPointX + VcontactPointY * VcontactPointY;
+	////////////////////////////////////////////////
+	//Calculating square rotation v at contact point
+	////////////////////////////////////////////////
 
-    //Tangent velocity of spinning square
-    double tanX = -1 * A->getva() * VcontactPointY;
-    double tanY = A->getva() * VcontactPointX;
-    double tanDotPerp = tanX * X_1 + tanY * Y_1;
-    //assign as rotational contact vector
-    double tanVX = X_1 * tanDotPerp;
-    double tanVY = Y_1 * tanDotPerp;
+	//Contact point vector
+    double vCenterDotParallel = vCenterX*X_2 + vCenterY*Y_2;
+	double v_contact_parallel[2] = {vCenterDotParallel * X_2, vCenterDotParallel * Y_2};
+    double v_contact_perpendicular[2] = {A->getShapeCharacteristicValue() * X_1, A->getShapeCharacteristicValue() * Y_1};
+    if(vCenterX*X_1 + vCenterY*Y_1 <= 0){
+        v_contact_perpendicular[0] *= -1;
+        v_contact_perpendicular[1] *= -1;
+    }
+
+    double v_contact_vector[2] = {v_contact_parallel[0] + v_contact_perpendicular[0],v_contact_parallel[1] + v_contact_perpendicular[1]};
+	double mag_v_contact_vectorSq = v_contact_vector[0]*v_contact_vector[0] + v_contact_vector[1]*v_contact_vector[1];
+
+    //Tangent rotation vector, at contact point
+    double v_tan_veclocity[2] = {-1 * v_contact_vector[1] * A->getva(), v_contact_vector[0] * A->getva()};
+    double v_tan_velocityDotPerp = v_tan_veclocity[0] * X_1 + v_tan_veclocity[1] * Y_1;
+    double v_tan_veclocity_impact[2] = {v_tan_velocityDotPerp * X_1, v_tan_velocityDotPerp * Y_1};
+
+
+	////////////////////////////////////////////////
+	//Calculating translation v of both
+	////////////////////////////////////////////////
 
     //Caculating circular object v's
     double vcDot = B->getvx() * X_1 + B->getvy() * Y_1;
@@ -188,23 +195,28 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     double vsParaX = A->getvx() - vsPerpX;
     double vsParaY = A->getvy() - vsPerpY;
 
-    double* X = collisions::intermediateV(vsPerpX + tanVX, vcPerpX, A->getMass(), B->getMass());
-    double* Y = collisions::intermediateV(vsPerpY + tanVY, vcPerpY, A->getMass(), B->getMass());
+    ////////////////////////////////////////////////
+    //Resolving collision
+    ////////////////////////////////////////////////
 
-    //Assign tanV_X_Y to its norm
-    double deltatanVX = X[0] - tanVX;
-    double deltatanVY = Y[0] - tanVY;
+    //General calculation, no rotation yetd
+    double* X = collisions::intermediateV(vsPerpX + v_tan_veclocity_impact[0], vcPerpX, A->getMass(), B->getMass());
+    double* Y = collisions::intermediateV(vsPerpY + v_tan_veclocity_impact[1], vcPerpY, A->getMass(), B->getMass());
 
-//    if(deltatanVX * tanVX + deltatanVY * tanVY > 0.0)
-//        A->setva(A->getva() - sqrt((deltatanVX*deltatanVX + deltatanVY*deltatanVY) / MagContactSq));
-//    else if (deltatanVX * tanVX + deltatanVY * tanVY < 0.0)
-//        A->setva(A->getva() + sqrt((deltatanVX*deltatanVX + deltatanVY*deltatanVY) / MagContactSq));
+    //Translation v
+    double resultant_vsDotContact = X[0] * v_contact_vector[0] + Y[0] * v_contact_vector[1];
+    double t_v[2] = {X[0], Y[0]};
+    X[0] = resultant_vsDotContact * v_contact_vector[0] / mag_v_contact_vectorSq;
+    Y[0] = resultant_vsDotContact * v_contact_vector[1] / mag_v_contact_vectorSq;
 
+    double rotation_v[2] = {t_v[0] - X[0], t_v[1] - Y[0]};
+    double va = sqrt(rotation_v[0] * rotation_v[0] + rotation_v[1] * rotation_v[1]) / sqrt(mag_v_contact_vectorSq);
+    if(rotation_v[0] * v_tan_veclocity[0] + rotation_v[1] * v_tan_veclocity[1] < 0){
+        va *= -1;
+    }
 
+    A->setva(va);
 
-    double resultantV_0DotContactV = X[0] * VcontactPointX + Y[0] * VcontactPointY;
-    X[0] = (resultantV_0DotContactV / MagContactSq) * VcontactPointX;
-    Y[0] = (resultantV_0DotContactV / MagContactSq) * VcontactPointY;
     A->setvx(vsParaX + X[0]);
 //    if(X[0] > 0.000000001) A->setvx(A->getvx() * particle::RESTITUTION);
     A->setvy(vsParaY + Y[0]);
