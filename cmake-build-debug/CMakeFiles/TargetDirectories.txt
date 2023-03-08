@@ -1,3 +1,0 @@
-/Users/jeremynguyen/Documents/GitHub/particlePhysics/cmake-build-debug/CMakeFiles/particlePhysics.dir
-/Users/jeremynguyen/Documents/GitHub/particlePhysics/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/jeremynguyen/Documents/GitHub/particlePhysics/cmake-build-debug/CMakeFiles/rebuild_cache.dir

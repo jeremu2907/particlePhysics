@@ -1,10 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include "SDL2/SDL.h"
-#include <mutex>
-#include <thread>
+#include <SDL2/SDL.h>
+
 #include <random>
-#include <condition_variable>
 
 #include "headers/timer.h"
 #include "headers/circleParticle.h"
