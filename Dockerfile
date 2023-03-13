@@ -22,8 +22,13 @@ RUN cd ${HOME} && \
 
 COPY . ${HOME}/proj
 
+# RUN cd ${HOME} && \
+#     cd proj && \
+#     cd data && \
+#     rm *
+
 RUN cd ${HOME}/proj && \
     cmake . && \
     make
 
-CMD ["/root/proj/particlePhysics"]
+# CMD ["/root/proj/particlePhysics"]
