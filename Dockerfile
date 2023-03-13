@@ -20,15 +20,15 @@ RUN cd ${HOME} && \
 RUN cd ${HOME} && \
     mkdir proj
 
-COPY . ${HOME}/proj
+# COPY . ${HOME}/proj
 
 # RUN cd ${HOME} && \
 #     cd proj && \
 #     cd data && \
 #     rm *
 
-RUN cd ${HOME}/proj && \
-    cmake . && \
-    make
+# RUN cd ${HOME}/proj && \
+#     cmake . && \
+#     make
 
 # CMD ["/root/proj/particlePhysics"]
