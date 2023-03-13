@@ -2,4 +2,6 @@
 
 docker kill $(cat ./id)
 
-rm ./id
+rm ./id ./CMakeCache.txt
+
+cmake .

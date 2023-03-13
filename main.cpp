@@ -23,8 +23,8 @@ void nextStateRender(std::string);
 
 int main(int argc, char *argv[]){
     cout << "Real Time Particle Collision Engine" << endl << endl;
-    getNextState("data/next_state.txt",1);
-    // testContinuousState(1200);
+    // getNextState("data/next_state.txt",1);
+    testContinuousState(1200);
 //    renderScreen.join();
 //    testScreen();
 }
@@ -194,7 +194,7 @@ void testContinuousState(int seconds){
     running = false;
     std::printf("Simulation Finished\n\n");
 
-    std::ofstream outfile("final_state.txt");
+    std::ofstream outfile("data/final_state.txt");
     for(auto j : particleList.getList()){
         outfile << j->getx() << ',' << j->gety() << ',' << j->getvx() << ',' << j->getvy() << ',' << j->getMass() << '\n';
     }

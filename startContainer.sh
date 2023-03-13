@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo docker build -t engine:1 .
+sudo docker build . -t engine:1
