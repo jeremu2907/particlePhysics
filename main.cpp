@@ -21,9 +21,6 @@ int getNextState(std::string, float);
 void waitForInput();
 void nextStateRender(std::string);
 
-std::mutex m;
-std::condition_variable cv;
-
 int main(int argc, char *argv[]){
     cout << "Real Time Particle Collision Engine" << endl << endl;
 
