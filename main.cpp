@@ -22,11 +22,32 @@ void waitForInput();
 void nextStateRender(std::string);
 
 int main(int argc, char *argv[]){
-    cout << "Real Time Particle Collision Engine" << endl << endl;
-    // getNextState("data/next_state.txt",1);
-    testContinuousState(1200);
-//    renderScreen.join();
-//    testScreen();
+    cout << "Real Time Particle Collision Engine\n\n";
+ 
+    if(argc == 2){
+        if(strcmp(argv[1],"0") == 0){
+            cout << "Calculating next state\n";
+            getNextState("data/next_state.txt",1);
+            cout << "Done\n";
+        }
+        else if(strcmp(argv[1],"1") == 0){
+            cout << "Rendering continuous state\n";
+            testContinuousState(1200);
+            cout << "Stop rendering";
+        }
+        else{
+            cout << "Invalid input\n";
+            cout << "Exiting...\n";
+            return EXIT_FAILURE;
+        }
+    }
+    else{
+        cout << "No input provided, assuming calculating next state\n";
+        cout << "Calculating next state\n";
+        getNextState("data/next_state.txt",1);
+        cout << "Done\n";
+    }
+    return EXIT_SUCCESS;
 }
 
 int getNextState(std::string stateFile, float RESTITUTION){
