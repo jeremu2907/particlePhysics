@@ -5,7 +5,8 @@ ENV HOME /root
 RUN apt-get update && apt-get -y --no-install-recommends install \
     build-essential \ 
     cmake \
-    wget
+    wget \
+    openssh-server
 
 #Downloading and building SDL2
 RUN cd ${HOME} && \
@@ -20,15 +21,10 @@ RUN cd ${HOME} && \
 RUN cd ${HOME} && \
     mkdir proj
 
-# COPY . ${HOME}/proj
-
-# RUN cd ${HOME} && \
-#     cd proj && \
-#     cd data && \
-#     rm *
-
-# RUN cd ${HOME}/proj && \
-#     cmake . && \
-#     make
+# RUN mkdir /run/sshd && \
+#     ssh-keygen -A && \
+#     sed -i "s/^.*PasswordAuthentication.*$/PasswordAuthentication no/" /etc/ssh/sshd_config && \
+#     sed -i "s/^.*X11Forwarding.*$/X11Forwarding yes/" /etc/ssh/sshd_config && \
+#     sed -i "s/^.*X11UseLocalhost.*$/X11UseLocalhost no/" /etc/ssh/sshd_config
 
 # CMD ["/root/proj/particlePhysics"]
