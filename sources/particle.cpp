@@ -1,9 +1,12 @@
 #include "../headers/particle.h"
+#include "../headers/functional.h"
+
+#define _USE_MATH_DEFINES
 
 const double particle::G_VAL = - 9.807;
-const double particle::DT = (double)1 / 60;
+const double particle::DT = (double)1 / functional::FREQ;
 float particle::RESTITUTION = 1;
-const double particle::PI = 3.1415926535;
+const double particle::PI = M_PI;
 
 particle::particle(){
     this->x = 0.0;
@@ -128,7 +131,7 @@ void particle::setTheta(double e) {
 }
 
 void particle::setva(double e) {
-    this->va = e;
+    this->va = fmod(e, 2 * particle::PI);
 }
 
 void particle::calcVy(){

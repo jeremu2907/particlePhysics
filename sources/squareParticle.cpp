@@ -15,11 +15,14 @@ void squareParticle::calcMinMax() {
     double deltaX = this->apothem * std::sin(this->getTheta());
     double deltaY = this->apothem * std::cos(this->getTheta());
 
-    this->min[0] = this->x - deltaX;
-    this->min[1] = this->y - deltaY;
+    deltaX = abs(deltaX);
+    deltaY = abs(deltaY);
 
-    this->max[0] = this->x + deltaX;
-    this->max[1] = this->y + deltaY;
+    this->min[0] = this->x - deltaX - this->apothem;
+    this->min[1] = this->y - deltaY - this->apothem;
+
+    this->max[0] = this->x + deltaX + this->apothem;
+    this->max[1] = this->y + deltaY + this->apothem;
 }
 
 double squareParticle::getShapeCharacteristicValue() {

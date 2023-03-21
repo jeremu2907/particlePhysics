@@ -23,7 +23,8 @@ void nextStateRender(std::string);
 
 int main(int argc, char *argv[]){
     cout << "Real Time Particle Collision Engine\n\n";
- 
+    cout << SDL_GetNumRenderDrivers() << endl;
+    
     if(argc == 2){
         if(strcmp(argv[1],"0") == 0){
             cout << "Calculating next state\n";
@@ -33,7 +34,7 @@ int main(int argc, char *argv[]){
         else if(strcmp(argv[1],"1") == 0){
             cout << "Rendering continuous state\n";
             testContinuousState(1200);
-            cout << "Stop rendering";
+            cout << "Stop rendering\n";
         }
         else{
             cout << "Invalid input\n";
@@ -89,12 +90,12 @@ int getNextState(std::string stateFile, float RESTITUTION){
 }
 
 void testContinuousState(int seconds){
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window * window = SDL_CreateWindow("Real-time Simulation", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, SDL_WINDOW_SHOWN);
+    const double DT_FRAME = 1/functional::FREQ;
+    cout << SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window * window = SDL_CreateWindow("Real-time Simulation", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     bool running = true;
     std::vector<particle *> list;
-
     //Generation list of objects
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -129,15 +130,15 @@ void testContinuousState(int seconds){
     const float RESTITUTION = 1;
     for(int j = 50; j <= 100; j += 20) {
         for(int k = 0; k <= 100; k+= 20){
-                list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
+                list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), 50,RESTITUTION));
         }
     }
 
 //    squareParticle * square = new squareParticle(75,75,0,vXDistrib(gen),vYDistrib(gen),particle::PI,mDistrib(gen),RESTITUTION);
 //    list.push_back(square);
 
-//    list.push_back(new squareParticle(47,50,0,10,0,0*vaDistrib(gen) / 100.0 * particle::PI,100,1));
-//    list.push_back(new circleParticle(40, 47, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
+   list.push_back(new squareParticle(52,50,particle::PI/3.9,0,0,vaDistrib(gen) / 100.0 * particle::PI,50,1));
+//    list.push_back(new circleParticle(50, 70, 0, -10, 10,RESTITUTION));
 //    list.push_back(new circleParticle(20, 40, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
 //    list.push_back(new circleParticle(10, 60, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
 //    list.push_back(new circleParticle(30, 30, vXDistrib(gen), vYDistrib(gen), 100,RESTITUTION));
@@ -176,7 +177,7 @@ void testContinuousState(int seconds){
             totalLoops++;
         }
 
-        if(!t_calc.isTimeOut((double)1/60)) {
+        if(!t_calc.isTimeOut((double)DT_FRAME)) {
             //do something to pass time as a busy-wait or sleep
         } else {
             //Calculate state of particle @60Hz
@@ -184,15 +185,15 @@ void testContinuousState(int seconds){
             particleList.checkForCollision();
 
             for(auto j : particleList.getList()){
-                j->calcSy();
-                j->calcSx();
+                    j->calcSy();
+                    j->calcSx();
                 if(j->getShape() == particle::SQUARE)
                     j->calcTheta();
             }
 
-//            square->calcSy();
-//            square->calcSx();
-//            square->calcTheta();
+        //    square->calcSy();
+        //    square->calcSx();
+        //    square->calcTheta();
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
@@ -207,7 +208,7 @@ void testContinuousState(int seconds){
             SDL_RenderPresent(renderer);
 
             t_calc.start();
-            rx += (double) 1/60;
+            rx += (double) DT_FRAME;
             totalLoops++;
         }
     }
@@ -226,7 +227,7 @@ void testContinuousState(int seconds){
 }
 
 void testScreen(){
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_InitSubSystem(SDL_INIT_VIDEO);
     SDL_Window * window = SDL_CreateWindow("Particle Render", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     bool running = true;
