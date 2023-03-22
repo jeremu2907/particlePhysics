@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named particlePhysics
+# Target rules for targets named physicsEngine
 
 # Build rule for target.
-particlePhysics: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 particlePhysics
-.PHONY : particlePhysics
+physicsEngine: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 physicsEngine
+.PHONY : physicsEngine
 
 # fast build rule for target.
-particlePhysics/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/build
-.PHONY : particlePhysics/fast
+physicsEngine/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/build
+.PHONY : physicsEngine/fast
 
 main.o: main.cpp.o
 .PHONY : main.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -142,7 +142,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -150,7 +150,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 sources/circleParticle.o: sources/circleParticle.cpp.o
@@ -158,7 +158,7 @@ sources/circleParticle.o: sources/circleParticle.cpp.o
 
 # target to build an object file
 sources/circleParticle.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/circleParticle.cpp.o
 .PHONY : sources/circleParticle.cpp.o
 
 sources/circleParticle.i: sources/circleParticle.cpp.i
@@ -166,7 +166,7 @@ sources/circleParticle.i: sources/circleParticle.cpp.i
 
 # target to preprocess a source file
 sources/circleParticle.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/circleParticle.cpp.i
 .PHONY : sources/circleParticle.cpp.i
 
 sources/circleParticle.s: sources/circleParticle.cpp.s
@@ -174,7 +174,7 @@ sources/circleParticle.s: sources/circleParticle.cpp.s
 
 # target to generate assembly for a file
 sources/circleParticle.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/circleParticle.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/circleParticle.cpp.s
 .PHONY : sources/circleParticle.cpp.s
 
 sources/collisions.o: sources/collisions.cpp.o
@@ -182,7 +182,7 @@ sources/collisions.o: sources/collisions.cpp.o
 
 # target to build an object file
 sources/collisions.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/collisions.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/collisions.cpp.o
 .PHONY : sources/collisions.cpp.o
 
 sources/collisions.i: sources/collisions.cpp.i
@@ -190,7 +190,7 @@ sources/collisions.i: sources/collisions.cpp.i
 
 # target to preprocess a source file
 sources/collisions.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/collisions.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/collisions.cpp.i
 .PHONY : sources/collisions.cpp.i
 
 sources/collisions.s: sources/collisions.cpp.s
@@ -198,15 +198,39 @@ sources/collisions.s: sources/collisions.cpp.s
 
 # target to generate assembly for a file
 sources/collisions.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/collisions.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/collisions.cpp.s
 .PHONY : sources/collisions.cpp.s
+
+sources/functional.o: sources/functional.cpp.o
+.PHONY : sources/functional.o
+
+# target to build an object file
+sources/functional.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/functional.cpp.o
+.PHONY : sources/functional.cpp.o
+
+sources/functional.i: sources/functional.cpp.i
+.PHONY : sources/functional.i
+
+# target to preprocess a source file
+sources/functional.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/functional.cpp.i
+.PHONY : sources/functional.cpp.i
+
+sources/functional.s: sources/functional.cpp.s
+.PHONY : sources/functional.s
+
+# target to generate assembly for a file
+sources/functional.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/functional.cpp.s
+.PHONY : sources/functional.cpp.s
 
 sources/particle.o: sources/particle.cpp.o
 .PHONY : sources/particle.o
 
 # target to build an object file
 sources/particle.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/particle.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/particle.cpp.o
 .PHONY : sources/particle.cpp.o
 
 sources/particle.i: sources/particle.cpp.i
@@ -214,7 +238,7 @@ sources/particle.i: sources/particle.cpp.i
 
 # target to preprocess a source file
 sources/particle.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/particle.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/particle.cpp.i
 .PHONY : sources/particle.cpp.i
 
 sources/particle.s: sources/particle.cpp.s
@@ -222,7 +246,7 @@ sources/particle.s: sources/particle.cpp.s
 
 # target to generate assembly for a file
 sources/particle.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/particle.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/particle.cpp.s
 .PHONY : sources/particle.cpp.s
 
 sources/squareParticle.o: sources/squareParticle.cpp.o
@@ -230,7 +254,7 @@ sources/squareParticle.o: sources/squareParticle.cpp.o
 
 # target to build an object file
 sources/squareParticle.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/squareParticle.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/squareParticle.cpp.o
 .PHONY : sources/squareParticle.cpp.o
 
 sources/squareParticle.i: sources/squareParticle.cpp.i
@@ -238,7 +262,7 @@ sources/squareParticle.i: sources/squareParticle.cpp.i
 
 # target to preprocess a source file
 sources/squareParticle.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/squareParticle.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/squareParticle.cpp.i
 .PHONY : sources/squareParticle.cpp.i
 
 sources/squareParticle.s: sources/squareParticle.cpp.s
@@ -246,7 +270,7 @@ sources/squareParticle.s: sources/squareParticle.cpp.s
 
 # target to generate assembly for a file
 sources/squareParticle.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/particlePhysics.dir/build.make CMakeFiles/particlePhysics.dir/sources/squareParticle.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/physicsEngine.dir/build.make CMakeFiles/physicsEngine.dir/sources/squareParticle.cpp.s
 .PHONY : sources/squareParticle.cpp.s
 
 # Help Target
@@ -257,7 +281,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... particlePhysics"
+	@echo "... physicsEngine"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
@@ -267,6 +291,9 @@ help:
 	@echo "... sources/collisions.o"
 	@echo "... sources/collisions.i"
 	@echo "... sources/collisions.s"
+	@echo "... sources/functional.o"
+	@echo "... sources/functional.i"
+	@echo "... sources/functional.s"
 	@echo "... sources/particle.o"
 	@echo "... sources/particle.i"
 	@echo "... sources/particle.s"

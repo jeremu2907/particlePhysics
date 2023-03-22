@@ -216,10 +216,10 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     X[0] = resultant_vsDotContact * v_contact_vector[0] / mag_v_contact_vectorSq;
     Y[0] = resultant_vsDotContact * v_contact_vector[1] / mag_v_contact_vectorSq;
 
-    A->setvx(vsParaX + X[0]);
-    A->setvy(vsParaY + Y[0]);
-    B->setvx(vcParaX + X[1]);
-    B->setvy(vcParaY + Y[1]);
+    A->setvx((vsParaX + X[0]) * particle::RESTITUTION);
+    A->setvy((vsParaY + Y[0]) * particle::RESTITUTION);
+    B->setvx((vcParaX + X[1]) * particle::RESTITUTION);
+    B->setvy((vcParaY + Y[1]) * particle::RESTITUTION);
 
     double energyAfter = A->getMass() * (A->getvx()*A->getvx() + A->getvy()*A->getvy()) + 
                          B->getMass() * (B->getvx()*B->getvx() + B->getvy()*B->getvy());
@@ -236,7 +236,7 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
         va *= -1;
     }
 
-    A->setva(va);
+    A->setva(va * particle::RESTITUTION);
 }
 
 bool collisions::testCollisionCircleCircle(particle *A, particle *B) {
@@ -309,7 +309,7 @@ bool collisions::testCollisionSquareCircle(particle& p1, particle& p2) {
     uY /= uMag;
     double uDotV1 = std::abs(uX * X_1 + uY * Y_1);
     double uDotV2 = std::abs(uX * X_2 + uY * Y_2);
-    double scale = L / ((uDotV1 > uDotV2)? uDotV1 : uDotV2);
+    double scale = (L + 0.05) / ((uDotV1 > uDotV2)? uDotV1 : uDotV2);
     double sepX = scale * uX;
     double sepY = scale * uY;
 
