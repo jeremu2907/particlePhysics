@@ -202,8 +202,8 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     ////////////////////////////////////////////////
 
     //General calculation, no rotation yetd
-    double* X = collisions::intermediateV(vsPerpX + v_tan_veclocity_impact[0], vcPerpX, A->getMass(), B->getMass());
-    double* Y = collisions::intermediateV(vsPerpY + v_tan_veclocity_impact[1], vcPerpY, A->getMass(), B->getMass());
+    double* X = collisions::intermediateV(vsPerpX + v_tan_veclocity_impact[0] / sqrt(6), vcPerpX, A->getMass(), B->getMass());
+    double* Y = collisions::intermediateV(vsPerpY + v_tan_veclocity_impact[1] / sqrt(6), vcPerpY, A->getMass(), B->getMass());
 
     double energyBefore = A->getMass() * (A->getvx()*A->getvx() + A->getvy()*A->getvy()) + 
                           B->getMass() * (B->getvx()*B->getvx() + B->getvy()*B->getvy()) + 
@@ -226,10 +226,8 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     energyAfter *= 0.5;
 
     double energyDiff = abs(energyBefore - energyAfter);
-    std::cout << energyDiff << std::endl;
     double va = sqrt(2 * energyDiff / (1.0/6.0 * A->getMass() * A->getShapeCharacteristicValue() * A->getShapeCharacteristicValue())); 
     
-    std::cout << va << std::endl;
 
     double rotation_v[2] = {t_v[0] - X[0], t_v[1] - Y[0]};
     if(rotation_v[0] * v_tan_veclocity[0] + rotation_v[1] * v_tan_veclocity[1] > 0){
