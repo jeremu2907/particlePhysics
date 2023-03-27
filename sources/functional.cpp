@@ -73,21 +73,3 @@ void functional::parseStringToData(std::string s, double *x, double *y, double *
     indexL = ++indexR;
     *m = stod(s.substr(indexL,s.length() - indexL));
 }
-
-template<typename T>
-T functional::dot(T a[], T b[]){
-        try{
-            if(sizeof(a)/sizeof(a[0]) != sizeof(b)/sizeof(b[0])){
-                throw;
-            }
-        } catch (...) {
-            std::cout << "Error input size for dot product\n";
-        }
-
-        T res = 0;
-        for(int i = 0; i < sizeof(a)/sizeof(a[0]); i++){
-            res += a[i] * b[i];
-        }
-
-        return res;
-    }

@@ -201,9 +201,9 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     //Resolving collision
     ////////////////////////////////////////////////
 
-    //General calculation, no rotation yetd
-    double* X = collisions::intermediateV(vsPerpX + v_tan_veclocity_impact[0] / sqrt(6), vcPerpX, A->getMass(), B->getMass());
-    double* Y = collisions::intermediateV(vsPerpY + v_tan_veclocity_impact[1] / sqrt(6), vcPerpY, A->getMass(), B->getMass());
+    //General calculation
+    double* X = collisions::intermediateV(vsPerpX + v_tan_veclocity_impact[0], vcPerpX, A->getMass(), B->getMass());
+    double* Y = collisions::intermediateV(vsPerpY + v_tan_veclocity_impact[1], vcPerpY, A->getMass(), B->getMass());
 
     double energyBefore = A->getMass() * (A->getvx()*A->getvx() + A->getvy()*A->getvy()) + 
                           B->getMass() * (B->getvx()*B->getvx() + B->getvy()*B->getvy()) + 
