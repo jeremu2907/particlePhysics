@@ -15,7 +15,7 @@ namespace functional{
     void parseStringToData(std::string s, double *x, double *y, double *vx, double *vy, double *m);
 
     template <typename T>
-    double dot(T u1, T u2, T v1, T v2)
+    T dot(T u1, T u2, T v1, T v2)
     {
         return v1 * u1 + v2 * u2;
     }
