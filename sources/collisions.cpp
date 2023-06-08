@@ -145,7 +145,6 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     double vCenterY = B->gety() - A->gety();
 
     //Switches value of 1 to 2 if center vector dot 1 is less than center dot 2
-    // if(std::abs(vCenterX * X_1 + vCenterY * Y_1) < abs(vCenterX * X_2 + vCenterY * Y_2)){
     if(std::abs(dot(vCenterX, vCenterY, X_1, Y_1)) < std::abs(dot(vCenterX, vCenterY, X_2, Y_2)))
     {
         double temp;
