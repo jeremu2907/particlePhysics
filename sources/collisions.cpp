@@ -232,6 +232,8 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     double rotation_v[2] = {t_v[0] - X[0], t_v[1] - Y[0]};
     if(rotation_v[0] * v_tan_veclocity[0] + rotation_v[1] * v_tan_veclocity[1] > 0){
         va *= -1;
+    } else if (rotation_v[0] * v_tan_veclocity[0] + rotation_v[1] * v_tan_veclocity[1] == 0 ){
+        va = 0;
     }
 
     A->setva(va * particle::RESTITUTION);
@@ -339,6 +341,7 @@ void collisions::checkForCollision() {
                     (List[i]->getShape() == particle::SQUARE && List[j]->getShape() == particle::CIRCLE) ){
                 if (testCollisionSquareCircle(*List[i], *List[j])) {
                     collisions::resolveCollisionSquareCircle(List[i], List[j]);
+                    ++totalCalculations;
                 }
             }
 
