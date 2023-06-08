@@ -26,6 +26,7 @@ RUN cd ${HOME} && \
     mkdir proj
 COPY . ${HOME}/proj
 RUN cd ${HOME}/proj && \
+    cmake . && \
     make
 
 # RUN mkdir /run/sshd && \
