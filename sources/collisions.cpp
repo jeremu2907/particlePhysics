@@ -3,6 +3,7 @@
 //
 
 #include "../headers/collisions.h"
+#include "../headers/functional.h"
 
 collisions::collisions(std::vector<particle*> e){
     for(int i = 0; i < e.size(); i++){
@@ -131,12 +132,12 @@ void collisions::resolveCollisionCircleCircle(circleParticle *A, circleParticle 
 }
 
 void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
-     collisions::orderSquareCircle(&A, &B);
+    collisions::orderSquareCircle(&A, &B);
 
     //Directional unit vectors for rotation indication
-    double X_1 = std::sin(A->getTheta());
+    double X_1 = -std::sin(A->getTheta());
     double Y_1 = std::cos(A->getTheta());
-    double X_2 = -1 * Y_1;
+    double X_2 = -Y_1;
     double Y_2 = X_1;
     double vCenterX = B->getx() - A->getx();
     double vCenterY = B->gety() - A->gety();
@@ -160,6 +161,7 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
 	////////////////////////////////////////////////
 
 	//Contact point vector
+    // double vCenterDotParallel = (double) functional::dot({vCenterX, vCenterY}, {X_2, Y_2});
     double vCenterDotParallel = vCenterX*X_2 + vCenterY*Y_2;
 	double v_contact_parallel[2] = {vCenterDotParallel * X_2, vCenterDotParallel * Y_2};
     double v_contact_perpendicular[2] = {A->getShapeCharacteristicValue() * X_1, A->getShapeCharacteristicValue() * Y_1};
@@ -199,9 +201,14 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     //Resolving collision
     ////////////////////////////////////////////////
 
-    //General calculation, no rotation yetd
+    //General calculation
     double* X = collisions::intermediateV(vsPerpX + v_tan_veclocity_impact[0], vcPerpX, A->getMass(), B->getMass());
     double* Y = collisions::intermediateV(vsPerpY + v_tan_veclocity_impact[1], vcPerpY, A->getMass(), B->getMass());
+
+    double energyBefore = A->getMass() * (A->getvx()*A->getvx() + A->getvy()*A->getvy()) + 
+                          B->getMass() * (B->getvx()*B->getvx() + B->getvy()*B->getvy()) + 
+                    A->getva() * A->getva() / 6.0 * A->getMass() * A->getShapeCharacteristicValue() * A->getShapeCharacteristicValue();
+    energyBefore *= 0.5;
 
     //Translation v
     double resultant_vsDotContact = X[0] * v_contact_vector[0] + Y[0] * v_contact_vector[1];
@@ -209,22 +216,27 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     X[0] = resultant_vsDotContact * v_contact_vector[0] / mag_v_contact_vectorSq;
     Y[0] = resultant_vsDotContact * v_contact_vector[1] / mag_v_contact_vectorSq;
 
+    A->setvx((vsParaX + X[0]) * particle::RESTITUTION);
+    A->setvy((vsParaY + Y[0]) * particle::RESTITUTION);
+    B->setvx((vcParaX + X[1]) * particle::RESTITUTION);
+    B->setvy((vcParaY + Y[1]) * particle::RESTITUTION);
+
+    double energyAfter = A->getMass() * (A->getvx()*A->getvx() + A->getvy()*A->getvy()) + 
+                         B->getMass() * (B->getvx()*B->getvx() + B->getvy()*B->getvy());
+    energyAfter *= 0.5;
+
+    double energyDiff = abs(energyBefore - energyAfter);
+    double va = sqrt(2 * energyDiff / (1.0/6.0 * A->getMass() * A->getShapeCharacteristicValue() * A->getShapeCharacteristicValue())); 
+    
+
     double rotation_v[2] = {t_v[0] - X[0], t_v[1] - Y[0]};
-    double va = sqrt(rotation_v[0] * rotation_v[0] + rotation_v[1] * rotation_v[1]) / sqrt(mag_v_contact_vectorSq);
-    if(rotation_v[0] * v_tan_veclocity[0] + rotation_v[1] * v_tan_veclocity[1] < 0){
+    if(rotation_v[0] * v_tan_veclocity[0] + rotation_v[1] * v_tan_veclocity[1] > 0){
         va *= -1;
+    } else if (rotation_v[0] * v_tan_veclocity[0] + rotation_v[1] * v_tan_veclocity[1] == 0 ){
+        va = 0;
     }
 
-    A->setva(va);
-
-    A->setvx(vsParaX + X[0]);
-//    if(X[0] > 0.000000001) A->setvx(A->getvx() * particle::RESTITUTION);
-    A->setvy(vsParaY + Y[0]);
-//    if(Y[0] > 0.000000001) A->setvy(A->getvy() * particle::RESTITUTION);
-    B->setvx(vcParaX + X[1]);
-//    if(X[1] > 0.000000001) B->setvx(B->getvx() * particle::RESTITUTION);
-    B->setvy(vcParaY + Y[1]);
-//    if(Y[1] > 0.000000001) B->setvy(B->getvy() * particle::RESTITUTION);
+    A->setva(va * particle::RESTITUTION);
 }
 
 bool collisions::testCollisionCircleCircle(particle *A, particle *B) {
@@ -267,19 +279,13 @@ bool collisions::testCollisionSquareCircle(particle& p1, particle& p2) {
     //Make A be the square particle and B circular for standardization
     particle *A = &p1;
     particle *B = &p2;
-//    if(p1.getShape() == particle::SQUARE) {
-//        A = &p1;
-//        B = &p2;
-//    } else {
-//        B = &p1;
-//        A = &p2;
-//    }
+
     collisions::orderSquareCircle(&A,&B);
 
     //Directional vectors for rotation indication
     double X_1 = -std::sin(A->getTheta());
     double Y_1 = std::cos(A->getTheta());
-    double X_2 = -1 * Y_1;
+    double X_2 = -Y_1;
     double Y_2 = X_1;
 
     double uX = B->getx() - A->getx();
@@ -291,9 +297,25 @@ bool collisions::testCollisionSquareCircle(particle& p1, particle& p2) {
 
     double L = A->getShapeCharacteristicValue() + B->getShapeCharacteristicValue();
 
+    //Not colliding
     if (uXDot_1 > L || uXDot_2 > L){
         return false;
     }
+
+    //Collides
+    //Separating particles
+    double uMag = sqrt(uX*uX + uY*uY);
+    uX /= uMag;
+    uY /= uMag;
+    double uDotV1 = std::abs(uX * X_1 + uY * Y_1);
+    double uDotV2 = std::abs(uX * X_2 + uY * Y_2);
+    double scale = (L + 0.05) / ((uDotV1 > uDotV2)? uDotV1 : uDotV2);
+    double sepX = scale * uX;
+    double sepY = scale * uY;
+
+    B->setx(A->getx() + sepX);
+    B->sety(A->gety() + sepY);
+
     return true;
 }
 
@@ -319,6 +341,7 @@ void collisions::checkForCollision() {
                     (List[i]->getShape() == particle::SQUARE && List[j]->getShape() == particle::CIRCLE) ){
                 if (testCollisionSquareCircle(*List[i], *List[j])) {
                     collisions::resolveCollisionSquareCircle(List[i], List[j]);
+                    ++totalCalculations;
                 }
             }
 
