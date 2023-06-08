@@ -5,10 +5,10 @@ ENV HOME /root
 RUN apt-get update && apt-get -y --no-install-recommends install \
     build-essential \ 
     cmake \
-    wget \
-    openssh-server \
-    vim \
-    iproute2
+#     wget \
+#     openssh-server \
+#     vim \
+#     iproute2
 
 #Downloading and building SDL2
 # RUN cd ${HOME} && \
@@ -24,6 +24,9 @@ RUN apt install libsdl2-dev libsdl2-2.0-0 -y;
 
 RUN cd ${HOME} && \
     mkdir proj
+COPY . ${HOME}/proj
+RUN cd ${HOME}/proj && \
+    make
 
 # RUN mkdir /run/sshd && \
 #     ssh-keygen -A && \
