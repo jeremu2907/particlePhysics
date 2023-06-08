@@ -1,5 +1,4 @@
 SDL2.framework
-final_state.txt
 CMakeFiles
 .vscode
 .idea
@@ -8,3 +7,4 @@ CMakeCache.txt
 physicsEngine
 .DS_Store
 id
+data/*

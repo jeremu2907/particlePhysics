@@ -75,10 +75,4 @@ namespace functional {
         indexL = ++indexR;
         *m = stod(s.substr(indexL,s.length() - indexL));
     }
-    
-    template<typename T>
-    T dot(T v1, T v2, T u1, T u2)
-    {
-        return v1 * u1 + v2 * u2;
-    }
 }
