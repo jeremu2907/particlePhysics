@@ -5,7 +5,7 @@ ENV HOME /root
 RUN apt-get update && apt-get -y --no-install-recommends install \
     build-essential \ 
     cmake \
-#     wget \
+    wget \
 #     openssh-server \
 #     vim \
 #     iproute2
@@ -20,7 +20,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 #     make && \
 #     make install
 #install sdl2
-RUN apt install libsdl2-dev libsdl2-2.0-0 -y;
+RUN apt install libsdl2-dev libsdl2-2.0-0 -y
 
 RUN cd ${HOME} && \
     mkdir proj
