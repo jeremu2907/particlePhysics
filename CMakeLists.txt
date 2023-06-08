@@ -18,10 +18,5 @@ set(MY_SOURCES
         main.cpp)
 
 find_package(SDL2 REQUIRED COMPONENTS SDL2)
-find_package(eigen3 REQUIRED COMPONENTS Eigen)
-
 add_executable(physicsEngine ${MY_SOURCES})
-
-target_link_libraries(
-    physicsEngine PRIVATE SDL2::SDL2
-)
+target_link_libraries(physicsEngine PRIVATE SDL2::SDL2)
