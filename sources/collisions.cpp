@@ -102,8 +102,8 @@ void collisions::resolveCollisionCircleCircle(circleParticle *A, circleParticle 
     double magTanSq = tanX * tanX + tanY * tanY;
 
     //Find dot product of component B/A in respect to tan vector
-    double ADotTan = A->getvx() * tanX + A->getvy() * tanY;
-    double BDotTan = B->getvx() * tanX + B->getvy() * tanY;
+    double ADotTan = A->dotV(tanX, tanY);
+    double BDotTan = B->dotV(tanX, tanY);
     //Parallel vector of AB in the direction of tan vector
     double paraAX = (ADotTan / (magTanSq)) * tanX;
     double paraAY = (ADotTan / (magTanSq)) * tanY;

@@ -72,6 +72,8 @@ class particle{
         void calcSx();
         void calcTheta();
 
+        double dotV(double x, double y);      //Particle velocity dot a vector [x,y]
+
 };
 
 #endif
