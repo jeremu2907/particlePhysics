@@ -102,8 +102,8 @@ void collisions::resolveCollisionCircleCircle(circleParticle *A, circleParticle 
     double magTanSq = tanX * tanX + tanY * tanY;
 
     //Find dot product of component B/A in respect to tan vector
-    double ADotTan = A->getvx() * tanX + A->getvy() * tanY;
-    double BDotTan = B->getvx() * tanX + B->getvy() * tanY;
+    double ADotTan = A->dotV(tanX, tanY);
+    double BDotTan = B->dotV(tanX, tanY);
     //Parallel vector of AB in the direction of tan vector
     double paraAX = (ADotTan / (magTanSq)) * tanX;
     double paraAY = (ADotTan / (magTanSq)) * tanY;
@@ -145,7 +145,6 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
     double vCenterY = B->gety() - A->gety();
 
     //Switches value of 1 to 2 if center vector dot 1 is less than center dot 2
-    // if(std::abs(vCenterX * X_1 + vCenterY * Y_1) < abs(vCenterX * X_2 + vCenterY * Y_2)){
     if(std::abs(dot(vCenterX, vCenterY, X_1, Y_1)) < std::abs(dot(vCenterX, vCenterY, X_2, Y_2)))
     {
         double temp;
@@ -165,8 +164,7 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
 	////////////////////////////////////////////////
 
 	//Contact point vector
-    // double vCenterDotParallel = (double) functional::dot({vCenterX, vCenterY}, {X_2, Y_2});
-    double vCenterDotParallel = vCenterX*X_2 + vCenterY*Y_2;
+    double vCenterDotParallel = dot(vCenterX, vCenterY, X_2, Y_2);
 	double v_contact_parallel[2] = {vCenterDotParallel * X_2, vCenterDotParallel * Y_2};
     double v_contact_perpendicular[2] = {A->getShapeCharacteristicValue() * X_1, A->getShapeCharacteristicValue() * Y_1};
     if(vCenterX*X_1 + vCenterY*Y_1 <= 0){
@@ -179,7 +177,7 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
 
     //Tangent rotation vector, at contact point
     double v_tan_veclocity[2] = {-1 * v_contact_vector[1] * A->getva(), v_contact_vector[0] * A->getva()};
-    double v_tan_velocityDotPerp = v_tan_veclocity[0] * X_1 + v_tan_veclocity[1] * Y_1;
+    double v_tan_velocityDotPerp = dot(v_tan_veclocity[0], v_tan_veclocity[1], X_1, Y_1);
     double v_tan_veclocity_impact[2] = {v_tan_velocityDotPerp * X_1, v_tan_velocityDotPerp * Y_1};
 
 
@@ -188,14 +186,14 @@ void collisions::resolveCollisionSquareCircle(particle *A, particle *B) {
 	////////////////////////////////////////////////
 
     //Caculating circular object v's
-    double vcDot = B->getvx() * X_1 + B->getvy() * Y_1;
+    double vcDot = B->dotV(X_1, Y_1);
     double vcPerpX = vcDot * X_1;
     double vcPerpY = vcDot * Y_1;
     double vcParaX = B->getvx() - vcPerpX;
     double vcParaY = B->getvy() - vcPerpY;
 
     //Calculating square tranlational v's
-    double vsDot = A->getvx() * X_1 + A->getvy() * Y_1;
+    double vsDot = A->dotV(X_1, Y_1);
     double vsPerpX = vsDot * X_1;
     double vsPerpY = vsDot * Y_1;
     double vsParaX = A->getvx() - vsPerpX;
@@ -296,9 +294,8 @@ bool collisions::testCollisionSquareCircle(particle& p1, particle& p2) {
     double uY = B->gety() - A->gety();
 
     //Dot product with unit vector is the same as the magnitude of projection vector
-    double uXDot_1 = std::abs(uX * X_1 + uY * Y_1);
-    double uXDot_2 = std::abs(uX * X_2 + uY * Y_2);
-
+    double uXDot_1 = std::abs(dot(uX, uY, X_1, Y_1));
+    double uXDot_2 = std::abs(dot(uX, uY, X_2, Y_2));
     double L = A->getShapeCharacteristicValue() + B->getShapeCharacteristicValue();
 
     //Not colliding
@@ -311,8 +308,8 @@ bool collisions::testCollisionSquareCircle(particle& p1, particle& p2) {
     double uMag = sqrt(uX*uX + uY*uY);
     uX /= uMag;
     uY /= uMag;
-    double uDotV1 = std::abs(uX * X_1 + uY * Y_1);
-    double uDotV2 = std::abs(uX * X_2 + uY * Y_2);
+    double uDotV1 = std::abs(dot(uX, uY, X_1, Y_1));
+    double uDotV2 = std::abs(dot(uX, uY, X_2, Y_2));
     double scale = (L + 0.05) / ((uDotV1 > uDotV2)? uDotV1 : uDotV2);
     double sepX = scale * uX;
     double sepY = scale * uY;

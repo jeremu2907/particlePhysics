@@ -8,7 +8,8 @@ const double particle::DT = (double)1 / functional::FREQ;
 float particle::RESTITUTION = 1;
 const double particle::PI = M_PI;
 
-particle::particle(){
+particle::particle()
+{
     this->x = 0.0;
     this->y = 0.0;
     this->vx = 0.0;
@@ -18,7 +19,8 @@ particle::particle(){
     this->mass = 1.0;
 }
 
-particle::particle(double x, double y){
+particle::particle(double x, double y)
+{
     this->x = x;
     this->y = y;
     this->vx = 0.0;
@@ -28,7 +30,8 @@ particle::particle(double x, double y){
     this->mass = 1.0;
 }
 
-particle::particle(double x, double y, double vx, double vy){
+particle::particle(double x, double y, double vx, double vy)
+{
     particle();
     this->x = x;
     this->y = y;
@@ -39,7 +42,8 @@ particle::particle(double x, double y, double vx, double vy){
     this->mass = 1.0;
 }
 
-particle::particle(double x, double y, double vx, double vy, double mass){
+particle::particle(double x, double y, double vx, double vy, double mass)
+{
     particle();
     this->x = x;
     this->y = y;
@@ -50,7 +54,8 @@ particle::particle(double x, double y, double vx, double vy, double mass){
     this->mass = mass;
 }
 
-particle::particle(double x, double y, double vx, double vy, double mass,float restitution){
+particle::particle(double x, double y, double vx, double vy, double mass,float restitution)
+{
     particle();
     this->x = x;
     this->y = y;
@@ -62,7 +67,8 @@ particle::particle(double x, double y, double vx, double vy, double mass,float r
     particle::RESTITUTION = restitution;
 }
 
-particle::particle(double x, double y, double rotation, double vx, double vy, double va, double mass,float restitution){
+particle::particle(double x, double y, double rotation, double vx, double vy, double va, double mass,float restitution)
+{
     particle();
     this->x = x;
     this->y = y;
@@ -74,72 +80,89 @@ particle::particle(double x, double y, double rotation, double vx, double vy, do
     particle::RESTITUTION = restitution;
 }
 
-double particle::getx(){
+double particle::getx()
+{
     return this->x;
 }
 
-double particle::gety(){
+double particle::gety()
+{
     return this->y;
 }
 
-double particle::getvx(){
+double particle::getvx()
+{
     return this->vx;
 }
 
-double particle::getvy(){
+double particle::getvy()
+{
     return this->vy;
 }
 
-double particle::getTheta() {
+double particle::getTheta() 
+{
     return this->theta;
 }
 
-double particle::getva() {
+double particle::getva() 
+{
     return this->va;
 }
 
-double particle::getMass(){
+double particle::getMass()
+{
     return this->mass;
 }
 
-double* particle::getMin(){
+double* particle::getMin()
+{
     return this->min;
 }
 
-double* particle::getMax(){
+double* particle::getMax()
+{
     return this->max;
 }
 
-void particle::setx(double e){
+void particle::setx(double e)
+{
     this->x = e;
 }
 
-void particle::sety(double e){
+void particle::sety(double e)
+{
     this->y = e;
 }
 
-void particle::setvx(double e){
+void particle::setvx(double e)
+{
     this->vx = e;
 }
 
-void particle::setvy(double e){
+void particle::setvy(double e)
+{
     this->vy = e;
 }
 
-void particle::setTheta(double e) {
+void particle::setTheta(double e) 
+{
     this->theta = e;
 }
 
-void particle::setva(double e) {
+void particle::setva(double e) 
+{
     this->va = fmod(e, 2 * particle::PI);
 }
 
-void particle::calcVy(){
+void particle::calcVy()
+{
     double vy0 = this->vy;
     this->vy = G_VAL * DT + vy0;
 }
 
-void particle::calcSyGravity(){
+void particle::calcSyGravity()
+{
     this->y += this->vy * DT + 0.5 * G_VAL * DT * DT;
     if(this->y <= 0){
         this->y *= -1;
@@ -155,7 +178,8 @@ void particle::calcSyGravity(){
     this->calcMinMax();
 }
 
-void particle::calcSy(){
+void particle::calcSy()
+{
     this->y += this->vy * DT;
     if(this->y <= 0 ){
         this->y *= -1;
@@ -169,7 +193,8 @@ void particle::calcSy(){
     this->calcMinMax();
 }
 
-void particle::calcSx(){
+void particle::calcSx()
+{
     this->x += this->vx * DT;
     if(this->x <= 0){
         this->x *= -1;
@@ -183,10 +208,16 @@ void particle::calcSx(){
     this->calcMinMax();
 }
 
-void particle::calcTheta() {
+void particle::calcTheta() 
+{
     this->theta += this->va * DT;
     if(this->theta > 2 * particle::PI)
         this->theta -= 2 * particle::PI;
     else if (this->theta < -2 * particle::PI)
         this->theta += 2 * particle::PI;
+}
+
+double particle::dotV(double x, double y)
+{
+    return this->getvx() * x + this->getvy() * y;
 }

@@ -128,8 +128,8 @@ void testContinuousState(int seconds){
 //    }
 
     const float RESTITUTION = 1;
-     for(int j = 0; j <= 100; j += 7) {
-         for(int k = 0; k <= 100; k+= 7){
+     for(int j = 0; j <= 100; j += 20) {
+         for(int k = 0; k <= 100; k+= 20){
                  list.push_back(new circleParticle(k, j, vXDistrib(gen), vYDistrib(gen), 15,RESTITUTION));
          }
      }
@@ -138,7 +138,7 @@ void testContinuousState(int seconds){
 //    list.push_back(square);
 
    list.push_back(new squareParticle(52,50,particle::PI/3.9,vXDistrib(gen), vYDistrib(gen),vaDistrib(gen) / 100.0 * particle::PI,15,RESTITUTION));
-   list.push_back(new squareParticle(30,70,particle::PI/3.9,vXDistrib(gen), vYDistrib(gen),vaDistrib(gen) / 100.0 * particle::PI,15,RESTITUTION));
+//    list.push_back(new squareParticle(30,70,particle::PI/3.9,vXDistrib(gen), vYDistrib(gen),vaDistrib(gen) / 100.0 * particle::PI,50,RESTITUTION));
    //list.push_back(new circleParticle(50, 70, 0, -10, 10,RESTITUTION));
    //list.push_back(new circleParticle(20, 40, vXDistrib(gen), vYDistrib(gen), 15,RESTITUTION));
    //list.push_back(new circleParticle(10, 60, vXDistrib(gen), vYDistrib(gen), 15,RESTITUTION));
@@ -186,7 +186,7 @@ void testContinuousState(int seconds){
             particleList.checkForCollision();
 
             for(auto j : particleList.getList()){
-                    j->calcSy();
+                    j->calcSyGravity();
                     j->calcSx();
                 if(j->getShape() == particle::SQUARE)
                     j->calcTheta();
